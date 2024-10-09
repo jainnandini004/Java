@@ -1,0 +1,400 @@
+crud use case:
+``````````````
+
+----spring boot mvc data jpa-----
+
+
+     pom.xml:
+	   
+	     spring data jpa
+		 spring web
+		 spring dev tools
+		 oracle driver
+		 lombok
+		 
+
+
+entity class:
+`````````````
+package com.sopra.entity;
+
+import java.util.Objects;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+public class Student {
+	@Id
+	private int stid;
+	private String stname;
+	private double stmarks;
+	
+
+}
+
+
+
+SpringBOOT DATA JPA CRUD APPLICATION-STUDENT MANAGEMENT APP - JSP:
+```````````````````````````````````````````````````````````````````
+package com.sopra;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class SpringbootMvcDatajpaApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(SpringbootMvcDatajpaApplication.class, args);
+	}
+
+}
+
+
+StudentController.java:
+````````````````````````
+package com.sopra.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.sopra.entity.Student;
+import com.sopra.service.StudentService;
+
+@Controller
+public class StudentController {
+
+    @Autowired
+    StudentService studentService;
+
+    @RequestMapping("/read-student")
+    public String showReadStudentPage(Model model) {
+        model.addAttribute("students", studentService.findAll());
+        return "readstudent";
+    }
+
+    @RequestMapping("/create-student")
+    public String showCreateStudentPage(Model model) {
+        model.addAttribute("command", new Student());
+        return "createstudent";
+    }
+
+    @RequestMapping(value = "/create-student", method = RequestMethod.POST)
+    public String createStudent(@ModelAttribute("student") Student student) {
+        studentService.saveStudent(student);
+        return "redirect:/read-student";
+    }
+
+    @RequestMapping(value = "/update-student/{id}")
+    public String showUpdateStudentPage(@PathVariable int id, Model model) {
+        model.addAttribute("id", id);
+        model.addAttribute("command", studentService.findById(id).orElse(null));
+        return "updatestudent";
+    }
+
+    @RequestMapping(value = "/update-student/{id}", method = RequestMethod.POST)
+    public String updateStudent(@PathVariable int id, @ModelAttribute("student") Student student) {
+        studentService.updateStudent(id, student);
+        return "redirect:/read-student";
+    }
+
+    @RequestMapping(value = "/delete-student/{id}")
+    public String deleteStudent(@PathVariable int id) {
+        studentService.deleteById(id);
+        return "redirect:/read-student";
+    }
+
+}
+
+Student.java:
+``````````````
+package com.sopra.entity;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+public class Student {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int stid;
+	private String stname;
+	private double stmarks;
+	
+	
+	
+
+}
+
+
+StudentRepository.java:
+````````````````````````
+package com.sopra.repository;
+
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.sopra.entity.Student;
+
+@Repository
+public interface StudentRepository extends JpaRepository<Student, Integer> {
+
+}
+
+StudentService.java:
+````````````````````
+package com.sopra.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.sopra.entity.Student;
+import com.sopra.repository.StudentRepository;
+
+@Service
+public class StudentService {
+
+    @Autowired
+    private StudentRepository studentRepository;
+
+    public List<Student> findAll() {
+        return studentRepository.findAll();
+    }
+
+    public Optional<Student> findById(int id) {
+        return studentRepository.findById(id);
+    }
+
+    public Student saveStudent(Student student) {
+        return studentRepository.save(student);
+    }
+
+    public Student updateStudent(int id, Student student) {
+        Student updatedStudent = studentRepository.findById(id).orElse(null);
+        updatedStudent.setStname(student.getStname());
+        updatedStudent.setStmarks(student.getStmarks());
+
+        return studentRepository.save(updatedStudent);
+    }
+
+    public void deleteById(int id) {
+       studentRepository.deleteById(id);
+    }
+
+}
+
+application.properties:
+````````````````````````
+spring.datasource.url=jdbc:mysql://localhost:3306/mydb?useSSL=false
+spring.datasource.username=root
+spring.datasource.password=root
+spring.jpa.hibernate.ddl-auto=create
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+server.port=2021
+spring.mvc.view.prefix:/WEB-INF/jsps/
+spring.mvc.view.suffix:.jsp
+
+
+
+index.html:
+```````````
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Students - Spring Boot Web MVC</title>
+</head>
+<body>
+<h1>Student Management System- CRUD App</h1>
+<a href="/read-student">Get Students</a>|
+<a href="/create-student">Create Student</a>
+</body>
+</html>
+
+
+createstudent.jsp:
+````````````````````
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
+<h1>Create Student</h1>
+<form:form method="post" action="/create-student">
+    <table>
+        <tr>
+            <td>Enter Student name: </td>
+            <td><form:input path="stname"/></td>
+        </tr>
+        <tr>
+            <td>Enter Student marks: </td>
+            <td><form:input path="stmarks"/></td>
+        </tr>
+        
+        <tr>
+            <td></td>
+            <td><input type="submit" value="Create"/></td>
+        </tr>
+    </table>
+</form:form>
+
+readstudent.jsp:
+````````````````
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
+<h1>Read Students</h1>
+    <table border="2" width="70%" cellpadding="2">
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Marks</th>
+            <th>Update</th>
+            <th>Delete</th>
+           
+        </tr>
+        <c:forEach var="student" items="${students}">
+            <tr>
+                <td>${student.stid}</td>
+                <td>${student.stname}</td>
+                <td>${student.stmarks}</td>
+                
+                <td><a href="/update-student/${student.stid}">Update</a></td>
+                <td><a href="/delete-student/${student.stid}">Delete</a></td>
+            </tr>
+        </c:forEach>
+    </table>
+<br/>
+<a href="/create-student">Create Student</a>
+
+
+updatestudent.jsp:
+`````````````````````
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
+<h1>Update Student</h1>
+<form:form method="post" action="/update-student/${id}">
+    <table>
+        <tr>
+            <td>Student Name: </td>
+            <td><form:input path="stname"/></td>
+        </tr>
+        <tr>
+            <td>Student Marks: </td>
+            <td><form:input path="stmarks"/></td>
+        </tr>
+       
+        <tr>
+            <td></td>
+            <td><input type="submit" value="Update" /></td>
+        </tr>
+    </table>
+</form:form>
+
+
+pom.xml:
+````````
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.5.4</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>com.sopra</groupId>
+	<artifactId>springboot-mvc-datajpa</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>springboot-mvc-datajpa</name>
+	<description>Demo project for Spring Boot</description>
+	<properties>
+		<java.version>1.8</java.version>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-jasper</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

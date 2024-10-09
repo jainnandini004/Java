@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app>
+
+	<servlet>
+		<servlet-name>abc1</servlet-name>
+		<servlet-class>com.servlet.ServletDemo1</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>abc1</servlet-name>
+		<url-pattern>/first</url-pattern>
+	</servlet-mapping>
+	
+	
+	
+	
+	<servlet>
+		<servlet-name>abc2</servlet-name>
+		<servlet-class>com.servlet.ServletDemo2</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>abc2</servlet-name>
+		<url-pattern>/second</url-pattern>
+	</servlet-mapping>
+	
+	
+	
+	
+	
+	
+	<servlet>
+		<servlet-name>abc3</servlet-name>
+		<servlet-class>com.servlet.ServletDemo3</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>abc3</servlet-name>
+		<url-pattern>/third</url-pattern>
+	</servlet-mapping>
+	
+	
+	
+	
+	
+	
+	
+	<servlet>
+		<servlet-name>abc4</servlet-name>
+		<servlet-class>com.servlet.ServletDemo4</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>abc4</servlet-name>
+		<url-pattern>/fourth</url-pattern>
+	</servlet-mapping>
+	
+	
+	
+</web-app>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd   
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop.xsd">
+    
+<!-- some extra functionality if we want to insert then we have to use @aspect annotation (AOP) it enable the concept of modularization-->
+
+<!-- 
+Enables support for handling components marked with AspectJ's @Aspect annotation,
+similar to functionality found in Spring's <aop:aspectj-autoproxy> XML element.
+  -->
+	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+	
+	<bean id="op" class="com.maven.Operation_Implementation" />
+	<bean id="to" class="com.maven.Aop_File" />
+
+</beans>

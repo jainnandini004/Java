@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<bean id="obj" class="com.spring.Student">
+		<property name="id" value="74"/>
+       	<property name="name" value="Nandini Jain"/>
+		<property name="address">      
+          		<ref bean="add"/>
+		</property>  
+</bean>
+    
+<bean id="add" class="com.spring.Address">
+    
+  		<property name="cityname" value="Hyd"/>
+       	<property name="statename" value="Tel"/>
+       	<property name="countryname" value="India"/>
+   
+</bean>
+
+
+</beans>

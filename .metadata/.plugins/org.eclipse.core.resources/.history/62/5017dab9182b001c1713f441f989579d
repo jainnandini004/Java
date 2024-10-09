@@ -1,0 +1,20 @@
+package com.springboot.controller;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+
+@RestController
+public class HelloController {
+	
+	@RequestMapping("/hello")
+	public String display()
+	{
+		return "Welcome to Rest API";
+	}
+	
+
+}

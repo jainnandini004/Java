@@ -1,0 +1,45 @@
+package com.springboot.config;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
+import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
+import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
+
+
+/*----------------------------@EnableWebSocketMessageBroker- This annotation is used to enable the WebSocket Server.------------------------------------*/ 
+
+/*--------WebSocketMessageBrokerConfigurer Interface-provide definitions or logic to some of its methods to establish a WebSocket connection.----------*/
+
+@Configuration
+@EnableWebSocketMessageBroker
+public class WebSocketConfig implements WebSocketMessageBrokerConfigurer
+{
+
+/*----The below method define a WebSocket endpoint so that client will use it to establish a connection with our WebSocket server.----------------------*/	
+@Override
+public void registerStompEndpoints(StompEndpointRegistry registry)
+{
+/*---- STOMP is a messaging protocol that defines the rules and format for dataexchanging between server and client.------------------------------------*/
+
+/* Why we need STOMP for developing the chat application?? The problem with
+ * WebSocket is that it fails to identify particular users.*/
+	
+	registry.addEndpoint("/ws").withSockJS();
+	}
+
+
+/*-----------------The below method is used to route the message from one client to all client in the group chat.----------------------------------------*/
+@Override
+public void configureMessageBroker(MessageBrokerRegistry registry)
+{
+/*-----------------Message Broker Method will broadcast the messages to all the connected users or clients who subscribed to that topic.------------------------*/	
+
+	
+/*--------------The messages whose destination starts with “/app”, it should be routed to the message handling methods.----------------------------------*/
+	registry.setApplicationDestinationPrefixes("/app");
+/*-----------------The messages whose destination starts with “/topics”, it should be routed to the message broker.--------------------------------------*/ 
+	registry.enableSimpleBroker("/topic");
+	}
+}
+

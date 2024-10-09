@@ -1,0 +1,159 @@
+
+aggregate functions:
+```````````````````````
+ @Query("SELECT AVG(u.age) from User u")
+ int getAverageAge();
+
+
+spring rest module:
+````````````````````
+
+
+`````````````````````````````````````
+
+
+WEBSERVICE:
+
+   icici card --> icici atm's (same type of applications)
+   
+   icici card(java) -> sbi atm(.net)
+   
+      
+   
+Web services are XML-based information exchange/JSON  systems that use the 
+Internet for direct application-to-application interaction. These systems 
+can include programs, objects, messages, or documents. 
+
+
+  -soap(simple object acccess protocol)->protocol based -> supports only xml 
+  -restful(representational state transfer)->architral style-> supports xml and json
+  
+  
+  rest developed by Roy Fielding who also developed http.
+  
+  resource has some reprsentations like xml,json.
+  
+  
+   HTTP methods:
+   
+     Get-retrieving the data
+	 put -updating the data
+	 post - inserting the data
+	 delete -deleting the data
+	 
+	Http also defines standard stats codes.
+
+ 404 - Resource not foundation
+ 200 - success
+ 201 - created
+ 401 - unauthorized
+ 500 - internal server error
+ ...
+
+official url to check all http status codes:
+
+   https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+
+
+advantages :
+```````````
+->these are platform independent
+   it can be writtin in any programming language and can be executed
+   on any platform.
+
+->it supports different data formats like html,xml,json,text..
+
+->these are reusable
+
+->they are language neutral.
+
+
+@Controller : is the annotation is used to mark the class as controller class
+
+@RestController : it is the annotation which is the combination of two annotations
+those are @Controller + @ResponseBody
+
+
+
+note:
+`````
+@ResponseBody is a Spring annotation which binds a method return value to the
+web response body. It is not interpreted as a view name. It uses HTTP Message
+converters to convert the return value to HTTP response body, based on the 
+content-type in the request HTTP header
+
+@PathVariable:
+````````````
+put, the @PathVariable annotation can be used to handle template variables 
+in the request URI mapping, and set them as method parameters.
+
+package com.sopra.model;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class HelloBean {
+	
+	private String message;
+	
+
+}
+
+HelloController.java:
+`````````````````````
+package com.sopra.controller;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.sopra.model.HelloBean;
+
+@RestController
+public class HelloController {
+	
+	@GetMapping("/hello")
+	public String hello()
+	{
+	  return "Welcome to SpringBoot Rest Demo";
+	}
+	
+	@GetMapping("/hello-bean")
+	public HelloBean helloBean()
+	{
+		return new HelloBean("welcome to spring boot bean class");
+	}
+	
+	@GetMapping("/hello/{name}")
+	public String helloPath(@PathVariable("name") String x)
+	{
+
+	return "welcome to " + x;
+		
+	}
+
+}
+
+application.properties:
+````````````````````````
+server.port=2021
+
+SpringBootRestDemoApplication.java:
+`````````````````````````````````````
+package com.sopra;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class SpringbootRestDemoApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(SpringbootRestDemoApplication.class, args);
+	}
+
+}

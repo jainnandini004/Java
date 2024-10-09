@@ -1,0 +1,155 @@
+
+jpql:
+
+ java persistence query language
+ 
+ 
+ JPQL is a powerful query language that allows you to define database
+ queries based on your entity model. 
+ 
+ Its structure and syntax are very 
+ similar to SQL.
+ 
+ 
+ StudentRepository.java:
+ ```````````````````````
+ package com.sopra.repository;
+
+import java.util.List;
+
+import javax.transaction.Transactional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import com.sopra.entity.Student;
+
+
+public interface StudentRepository extends JpaRepository<Student,Integer> {
+
+	@Query("from Student")
+	public List<Student> findAllStudents();
+	
+	@Query("select st.firstName ,st.lastName from Student st")
+	public List<Object[]> findStudentsPartialInfo();
+	
+	@Query("from Student where firstName=:fname")
+	public List<Student> findByFirstName(@Param("fname") String firstName);
+	
+	@Modifying
+	@Transactional
+	@Query("delete from Student where stid=:id")
+	int deleteStudentById(@Param("id") int stid);
+	  
+	
+	@Query(value = "select * from student",nativeQuery = true)
+    public List<Student> getAllStudents();
+	
+}
+
+Student.java:
+`````````````
+package com.sopra.entity;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class Student {
+
+	 @Id
+	 private int stid;
+	 
+	 private String firstName;
+	 
+	 private String lastName;
+	 
+	 
+}
+
+Test.java:
+```````````
+package com.sopra;
+
+import java.util.List;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+
+import com.sopra.entity.Student;
+import com.sopra.repository.StudentRepository;
+
+@SpringBootApplication
+public class SpringbootJpaPaginationDemoApplication {
+
+	public static void main(String[] args) {
+     ApplicationContext context = SpringApplication.run(SpringbootJpaPaginationDemoApplication.class, args);
+	
+	 StudentRepository repo= context.getBean(StudentRepository.class);
+	    
+	 //Page<Student> findAll = repo.findAll(PageRequest.of(1,1));
+	
+	 //findAll.forEach(p->System.out.println(p));
+	 
+	  //List<Student> findAll = repo.findAll(Sort.by("firstName","lastName"));
+	 
+	  //findAll.forEach(p->System.out.println(p.getFirstName() + " " + p.getLastName()));
+	 
+	 //List<Student> findAll = repo.findAll(Sort.by(Sort.Direction.DESC, "firstName"));
+	 
+	 //findAll.forEach(p->System.out.println(p.getFirstName()));
+	 
+	 
+	  // repo.findAll(PageRequest.of(0, 2, Direction.DESC, "firstName")).forEach(p->System.out.println(p.getFirstName()));
+	 
+	 
+	 /*List<Student> students = repo.findAllStudents();
+	 for(Student st: students)
+	 {
+		 System.out.println(st);
+	 }*/
+	 
+	   /*List<Object[]> objs = repo.findStudentsPartialInfo();
+	   for(Object[] ob:objs)
+	   {
+		   System.out.println(ob[0] + " " + ob[1]);
+	   }*/
+	 
+	 
+	   /* List<Student> students = repo.findByFirstName("nishanth");
+	    
+	    for(Student st:students)
+	    {
+	    	System.out.println(st);
+	    }*/
+	 
+	/* int x = repo.deleteStudentById(106);
+	 System.out.println(x + "row(s) delted");*/
+	 
+	 
+	  List<Student> students= repo.getAllStudents();
+	  
+	  for(Student st: students)
+	  {
+		  System.out.println(st);
+	  }
+	}
+
+}

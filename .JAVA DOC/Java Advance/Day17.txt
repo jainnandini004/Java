@@ -1,0 +1,52 @@
+Git Command
+'''''''''''''''''''''''''''''
+1.git config --global user.email "jainnandini550@gmail.com"
+
+
+2. git config --global user.password "123N@ndini04"
+
+
+3. clone the git projects
+    git clone "https://github.com/jainnandini550/Git-GitHub-Learning.git"
+
+
+4. Go to the Directory or folder
+    cd c:\Git-GitHub-Learning
+
+
+5. made some changes by opening the file 
+
+
+6. write command= git add .
+   (these files will moved to staging area)
+
+
+7. git commit -m "initial commit"
+
+
+8. files will be moved to unmodified area
+ 
+
+9. git push -u origin master
+
+Note:
+''''''''''
+Clear command used for clearing the git console.
+
+
+How to add git hub project to Eclipse?
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+1.create github repository
+2.Start Eclipse
+3.Goto Perspective->Git repositories and click on Add Git Repo
+4.Create a project in Eclipse
+5.Do aright click on project >Teams >Share >add to git repo
+6.then again right click on project then click on commit
+7.then drag the project into below box
+8.then do commit and push
+9.then write user name and password( if it says like not authorized then generate token by go to the github setting>developer tools>check repo>generate token and in place of password give token number)
+10.then the project succesfully pushed in the github repository
+
+Token:
+''''''''''''''
+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

@@ -1,0 +1,84 @@
+package com.springboot.service;
+
+import java.util.regex.Pattern;
+
+import org.springframework.stereotype.Service;
+
+import com.springboot.entity.Employee;
+
+@Service
+public class EmployeeService {
+
+	public Employee EmployeeValid(Employee employee) {
+		
+		int id=employee.getId();
+		String firstname=employee.getFirstname();
+		String lastname=employee.getLastname();
+		String department=employee.getDepartment();
+		
+		boolean checkid,checkfirstname,checklastname,checkdepartment;
+		
+		if (id>1000)
+		{
+			checkid=false;
+		}
+		else {
+			checkid=true;
+		}
+		
+		
+		if((3>firstname.length()) && firstname.isEmpty())
+		{
+			checkfirstname=true;
+		}
+		else
+		{
+			checkfirstname=false;
+		}
+		
+		
+		
+		if((3>lastname.length()) && lastname.isEmpty())
+		{
+			checklastname=false;
+		}
+		else
+		{
+			checklastname=true;
+		}
+			
+		
+		
+		if(department!="ME" || department!="EE" || department!="CSE" || department!="Civil" || department!="EC")
+		{
+			checkdepartment=false;
+		}
+		else
+		{
+			checkdepartment=true;
+		}
+			
+		
+		
+		System.out.println("\nEmployee details you entered.");
+		System.out.println("\nId="+employee.getId()+"\nFirstName="+employee.getFirstname()+"\nSecondName="+employee.getLastname()+"\nDepartment="+employee.getDepartment());
+		
+		if(checkfirstname && checklastname && checkdepartment )
+			{
+			System.out.println("The above details are valid!");
+			System.out.println();
+			System.out.println("Header:http://localhost:2027/employeeValidate");
+			
+			}
+		else
+		{
+			System.out.println("Failed:The above details are invalid!");
+		}
+		
+		return employee;
+	}
+
+
+	
+
+}

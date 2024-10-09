@@ -1,0 +1,4 @@
+
+	public Student findByLastName(String lastName);
+	public Student findByFirstName(String firstName);
+	public Student findByFirstNameOrStid(String firstName,int stid);

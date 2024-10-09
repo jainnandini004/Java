@@ -1,0 +1,358 @@
+
+assignment:
+
+on top of this application apply spring jdbc module to store
+student's data in the corresponding student table of db.
+
+
+Web.xml
+
+<!-- Step1: configure the DispatcherServlet class in web.xml file -->
+
+
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+<servlet>
+<servlet-name>spring</servlet-name>
+<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+<servlet-name>spring</servlet-name>
+<url-pattern>/</url-pattern></servlet-mapping></web-app>
+
+
+Controller_class.java	
+	
+// Step2 :create controller class under src/main/java under one package(com.sopra.controller)
+//  make sure controller class must be annotated with @Controller annotation.
+
+
+package com.spring;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.spring1.RecordDao;
+
+@Controller
+public class Controller_Class {
+	
+	@Autowired
+	private RecordDao dao;
+	
+	
+	@RequestMapping("/showreg")
+	public ModelAndView showRegistrationPage()
+	{
+		ModelAndView mv=new ModelAndView();
+		mv.setViewName("userReg");
+		return mv;
+	}
+	
+	
+	@RequestMapping(value="/registerUser",method = RequestMethod.POST)
+	
+	
+//	First Approach
+//	public ModelAndView registerStudent(HttpServletRequest req,HttpServletResponse res)
+//	{
+//		String stid = req.getParameter("stid");
+//		String firstName = req.getParameter("firstName");
+//		String lastName = req.getParameter("lastName");
+//		Student stu=new Student();
+//		stu.setStid(stid);
+//		stu.setFirstName(firstName);
+//		stu.setLastName(lastName);
+//		dao.register(stu);
+//		
+//	
+//		ModelAndView mv=new ModelAndView();
+//		mv.addObject("stu",stu);
+//		mv.setViewName("success");
+//		return mv;
+	
+	
+	
+//	Second Approach	
+//		public ModelAndView registerStudent(@RequestParam("stid") int stid, @RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName)
+//		{
+//				
+//		Student stu=new Student();
+//		stu.setStid(stid);
+//		stu.setFirstName(firstName);
+//		stu.setLastName(lastName);
+//		dao.register(stu);
+//	
+//		ModelAndView mv=new ModelAndView();
+//		mv.addObject("stu",stu);
+//		mv.setViewName("success");
+//		return mv;
+
+	
+	
+	
+//	Third Approach		
+	public ModelAndView registerStudent(@ModelAttribute("stu") Student stu)
+	{   
+
+			
+		dao.register(stu);
+		
+		ModelAndView mv=new ModelAndView();
+		mv.addObject("stu",stu);
+		mv.setViewName("success");
+		return mv;
+	}
+}
+
+
+
+
+
+spring_servlet.xml
+
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd  
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+  
+<context:component-scan base-package="com.spring,com.spring1"></context:component-scan>
+  
+  <bean id="view" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+  
+    <property name="prefix">
+    
+       <value>/WEB-INF/views/</value>
+    
+    </property>
+    
+    <property name="suffix">
+       
+       <value>.jsp</value>
+    
+    </property>
+</bean>
+
+<!-- THE BELOW CODE IS FOR JDBC -->
+
+
+<bean id="template" class="org.springframework.jdbc.core.JdbcTemplate">
+
+<property name="dataSource" ref="ds"/>
+
+</bean>
+
+ <bean id="ds" class="org.springframework.jdbc.datasource.DriverManagerDataSource">   
+       <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+       <property name="url" value="jdbc:mysql://localhost:3306/MyDatabase"/>
+       <property name="username" value="root"/>
+       <property name="password" value="123N@ndini04"/>  
+  
+  </bean>
+
+</beans>
+
+
+
+Success.jsp
+
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"   isELIgnored="false"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+
+<!-- <h5>Successfully registered</h5><br/> -->
+
+<h5>Successfully deleted</h5><br/>
+
+<!-- <h5>Successfully updated</h5><br/> -->
+
+</form>
+</body>
+</html>
+
+UserReg.jsp
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+  <h2>Registration page</h2>
+  <form action="registerUser" method="post">
+
+     <pre>
+      Enter Student Id: <input type="text" name="stid"/><br/>
+      Enter Student FirstName: <input type="text" name="firstName"/><br/>
+      Enter Student LastName: <input type="text" name="lastName"/><br/>
+      <input type="submit" value="Register"/>  
+     </pre>
+
+  </form>
+
+
+
+Student.java
+
+package com.spring;
+
+public class Student {
+		
+		private int stid;
+		private String firstName;
+		private String lastName;
+		
+		public Student()
+		{
+			
+		}
+
+		public int getStid() {
+			return stid;
+		}
+
+		public void setStid(int stid) {
+			this.stid = stid;
+		}
+
+		public String getFirstName() {
+			return firstName;
+		}
+
+		public void setFirstName(String firstName) {
+			this.firstName = firstName;
+		}
+
+		public String getLastName() {
+			return lastName;
+		}
+
+		public void setLastName(String lastName) {
+			this.lastName = lastName;
+		}
+
+		@Override
+		public String toString() {
+			return "Student [stid=" + stid + ", firstName=" + firstName + ", lastName=" + lastName + "]";
+		}
+	}
+
+
+
+
+RecordDao.java
+
+package com.spring1;
+
+	import java.sql.ResultSet;
+	import java.util.List;
+
+	import org.springframework.beans.factory.annotation.Autowired;
+	import org.springframework.jdbc.core.JdbcTemplate;
+	import org.springframework.jdbc.core.ResultSetExtractor;
+	import org.springframework.stereotype.Component;
+	import org.springframework.stereotype.Repository;
+
+	import com.spring.Student;
+
+	@Repository
+	public class RecordDao {
+		
+		@Autowired
+		private JdbcTemplate jdbcTemplate;
+		
+		public int register(Student e)
+		{
+			
+//		INSERT OPERATION
+//		String sql = "insert into employee values(?,?,?)"; 
+//		return jdbcTemplate.update(sql, e.getStid(),e.getFirstName(),e.getLastName());
+	
+			
+			
+//		DELETE OPERATION		
+//		String sql="Delete from Employee where empId=? ";		
+//		return jdbcTemplate.update(sql,e.getStid());		 
+			 
+			
+			
+//		UPDATE OPERATION
+			String sql="update Employee set empfirstName=? where empId= ? "; 
+			return jdbcTemplate.update(sql,e.getFirstName(),e.getStid());
+			 
+		
+
+      }
+}
+
+
+
+index.jsp
+
+<html>
+<body>
+<h2>Hello World!</h2>
+</body>
+</html>
+
+pom.xml
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.maven2</groupId>
+  <artifactId>Spring_Web_maven</artifactId>
+  <packaging>war</packaging>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>Spring_Web_maven Maven Webapp</name>
+  <url>http://maven.apache.org</url>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.springframework/spring-web -->
+<!-- https://mvnrepository.com/artifact/org.springframework/spring-webmvc -->
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-webmvc</artifactId>
+    <version>5.3.10</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/org.springframework/spring-jdbc -->
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-jdbc</artifactId>
+    <version>5.3.10</version>
+</dependency>
+
+  </dependencies>
+  <build><plugins><plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-war-plugin</artifactId><version>3.3.1</version></plugin></plugins><finalName>check</finalName></build>
+  
+</project>
+

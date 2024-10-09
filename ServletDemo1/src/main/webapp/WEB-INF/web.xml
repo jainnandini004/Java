@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app>
+<servlet>
+  <servlet-name>sopra</servlet-name>
+  <servlet-class>javaServlet1.JavaServlet1</servlet-class>
+  
+</servlet>
+
+<servlet-mapping>
+  <servlet-name>sopra</servlet-name>
+  <url-pattern>/display</url-pattern>
+</servlet-mapping>
+</web-app>

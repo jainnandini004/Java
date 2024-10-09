@@ -1,0 +1,26 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title></title>
+</head>
+<body>
+	<!--center using CSS style  -->
+    <h1 style="text-align: center">
+      Fill the Employee Detail Form
+    </h1>
+    
+    <h4 style="text-align: center">
+	<form action="hello2">
+			<pre>
+		Employee Id: &nbsp;<input type="text" name="a" /><br />
+        Employee first name: &nbsp;<input type="text" name="a" /><br />
+        Employee last name: <input type="text" name="b" /><br />
+         <input type="submit" value="Submit" />
+     </pre>
+	</form>
+	</h4>
+</body>
+</html>

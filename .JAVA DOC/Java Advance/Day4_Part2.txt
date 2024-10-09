@@ -1,0 +1,234 @@
+jsp expression language:
+````````````````````````
+
+it simplifies the accessibility of data stored in the java bean component.
+and other objects like request,session,application etc..
+
+
+syntax:
+`````
+   ${expression}
+
+index1.jsp:
+```````````
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+<form action="usebean.jsp">
+
+Enter Student id: <input type="text" name="stid"/><br/>
+Enter Student Name: <input type="text" name="stname"/><br/>
+<input type="submit" value="go"/>
+</form>
+</body>
+</html>
+
+
+
+
+useBean.jsp:
+`````````````
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"
+    import="com.sopra.beans.Student"
+    isELIgnored="false"%>
+    
+<body>
+<jsp:useBean id="obj" class="com.sopra.beans.Student"></jsp:useBean>
+
+<%-- <jsp:setProperty property="stid" name="obj" />
+<jsp:setProperty property="stname" name="obj"/>
+ --%>
+ 
+ <jsp:setProperty property="*" name="obj"/>
+Records are: <br/>
+
+<%-- Student id is : <jsp:getProperty property="stid" name="obj"/>
+<br/>
+Student name is: <jsp:getProperty property="stname" name="obj"/> --%>
+
+<!--using jsp expression language --%>
+
+Student id is: ${obj.stid} <br/>
+Student name is: ${obj.stname}
+
+</body>
+</html>
+
+spring:
+``````
+->it is a framework
+
+->it means it contains both interfaces and implementation classes.
+
+
+->2002 - Rod johnson - spring was released by him
+
+->it is open source
+
+purpose:
+`````````
+ using this framework, what kind of applications we can develop?
+ 
+ 
+    ->desktop applications
+	->web applications
+	
+	
+what is the main advantage of spring f/w?
+
+  -> we can achieve one important concept i.e dependency injection
+
+
+using dependency injection we can achieve loose coupling in between
+classes.
+
+
+tight coupling vs loose coupling:
+````````````````````````````````
+
+class Car
+{
+  Engine engine;
+  public Car(Engine engine)
+  {
+    //engine = new Engine("new engine");
+  }
+}
+
+class Engine{
+
+  public Engine("new new engine")
+  {
+  
+  }
+
+}
+
+  ->maintainence of the program will be decreased
+  
+  
+From above program, both Car class and Engine classes are tightly coupled
+with each other.
+
+
+To make it loosely coupled, we have to apply one design pattern 
+
+
+In spring framework, we are applying inversion of control design pattern 
+to achieve that design pattern the concept name is 'dependency injection'.
+
+ 
+ spring f/w contains differnt modules
+ 
+  
+      -spring core module
+	  -spring jdbc module
+	  -spring web mvc module
+	  -spring orm module
+	  -spring test module
+	  -spring context module
+	  ....
+	  
+pivotal organization owned this spring in 2013 year.
+
+
+steps to write a spring program using spring core module:
+``````````````````````````````````````````````````````````
+
+1.create a java project
+2.create one package under src folder (com.sopra.bean) 
+3.create one bean class 
+4.under src we have to create spring configuration file to configure
+  beans.
+5.add spring core jars to the buildpath of the application
+6.create Test class and invoke business logic methods.
+
+
+	q)why we should configure java beans in spring configuration file?
+	
+	  because to create the object for java bean classes.
+	  
+    what is spring container in spring f/w?
+
+     spring container is responsible for creating java bean objects
+     managing , destrcution
+
+	 
+	spring container is the interface availabe in one package
+	
+         -BeanFactory
+         -ApplicationContext	
+  
+    q) to work on spring core module what jar files we required?
+	
+	    commons logging
+		spring beans
+		spring context
+		spring expression
+		spring core
+		
+example:
+`````````
+Student.java:
+`````````````
+package com.sopra.bean;
+
+public class Student {
+	
+	public void display()
+	{
+		
+		System.out.println("iam from display");
+	}
+
+}
+
+spingcontext.xml:
+`````````````````
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+   <bean id="stu" class="com.sopra.bean.Student"/>
+
+
+</beans>
+
+Test.java:
+```````````
+package com.sopra.bean;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class Test {
+	public static void main(String[] args) {
+		
+		//Student obj = new Student();
+		
+		//obj.display();
+		
+		ApplicationContext context = new ClassPathXmlApplicationContext("springcontext.xml");
+		
+		Student stu = (Student)context.getBean("stu");
+		
+		
+		stu.display();
+	}
+
+}
+
+
+core java link:
+```````````````
+https://youtu.be/bsABDNNA9L0

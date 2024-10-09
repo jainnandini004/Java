@@ -1,0 +1,30 @@
+package com.springboot.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
+
+import com.springboot.entity.Student;
+import com.springboot.service.StudentService;
+
+public class StudentController {
+	
+	@Autowired
+    StudentService studentService;
+	
+	
+    @RequestMapping("/existing-student")
+	public String ShowExistingStudentPage(Model model)
+	{
+		model.addAttribute("students", studentService.findAll());
+		return  "creatStudent";
+	}
+    
+    
+    @RequestMapping("/new-student")
+	public String ShowCreateStudentPage(Model model)
+	{
+		model.addAttribute("command", new Student());
+		return  "creatStudent";
+	}
+
+}

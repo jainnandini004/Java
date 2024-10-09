@@ -1,0 +1,235 @@
+how to inject reference type values:
+````````````````````````````````````
+Student.java:
+`````````````
+package com.sopra.beans;
+
+public class Student {
+	
+	private Address address;
+
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+	
+	public Student()
+	{
+		
+	}
+
+	@Override
+	public String toString() {
+		return "Student [address=" + address + "]";
+	}
+	
+
+}
+
+
+Address.java:
+`````````````
+package com.sopra.beans;
+
+public class Address {
+	
+	private String cityName;
+	private String stateName;
+	private String countryName;
+	
+	
+	
+	public String getCityName() {
+		return cityName;
+	}
+	public void setCityName(String cityName) {
+		this.cityName = cityName;
+	}
+	public String getStateName() {
+		return stateName;
+	}
+	public void setStateName(String stateName) {
+		this.stateName = stateName;
+	}
+	public String getCountryName() {
+		return countryName;
+	}
+	public void setCountryName(String countryName) {
+		this.countryName = countryName;
+	}
+	
+	
+	public Address()
+	{
+		
+	}
+	@Override
+	public String toString() {
+		return "Address [cityName=" + cityName + ", stateName=" + stateName + ", countryName=" + countryName + "]";
+	}
+
+}
+
+springcontext.xml:
+```````````````````
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+   <bean id="stu" class="com.sopra.beans.Student">
+   
+       <property name="address">
+       
+          <ref bean="add"/>
+          
+       </property>  
+       
+    </bean>
+    
+    <bean id="add" class="com.sopra.beans.Address">
+    
+       <property name="cityName" value="Hyd"/>
+       <property name="stateName" value="Tel"/>
+       <property name="countryName" value="India"/>
+    
+    </bean>
+
+
+</beans>
+
+Test.java:
+```````````
+package com.sopra.beans;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class Test {
+	
+	public static void main(String[] args) {
+		
+		
+		ApplicationContext context = new ClassPathXmlApplicationContext("springcontext.xml");
+		
+		Student stu = (Student)context.getBean("stu");
+		
+		System.out.println("city name is : " + stu.getAddress().getCityName());
+		System.out.println("state name is: " + stu.getAddress().getStateName());		
+		System.out.println("country name is: " + stu.getAddress().getCountryName());
+	}
+
+}
+
+
+
+how to inject collection type values (list,set,map):
+````````````````````````````````````````````````````
+Student.java:
+``````````````
+package com.sopra.beans;
+
+import java.util.List;
+
+public class Student {
+	
+	private int stid;
+	private String stname;
+	private List<String> subjects;
+	
+	
+	public int getStid() {
+		return stid;
+	}
+	public void setStid(int stid) {
+		this.stid = stid;
+	}
+	public String getStname() {
+		return stname;
+	}
+	public void setStname(String stname) {
+		this.stname = stname;
+	}
+	public List<String> getSubjects() {
+		return subjects;
+	}
+	public void setSubjects(List<String> subjects) {
+		this.subjects = subjects;
+	}
+	@Override
+	public String toString() {
+		return "Student [stid=" + stid + ", stname=" + stname + ", subjects=" + subjects + "]";
+	}
+	
+	
+	public Student()
+	{
+		
+	}
+	
+}
+
+
+springcontext.xml:
+`````````````````
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+   <bean id="stu" class="com.sopra.beans.Student">
+   
+     <property name="stid" value="100"/>
+     <property name="stname" value="Ram"/>
+     <property name="subjects">
+         <list>
+            <value>english</value>
+            <value>science</value>
+            <value>Hindhi</value>
+         
+         </list>
+     
+     </property>
+   
+   </bean>
+</beans>
+
+Test.java:
+````````````
+package com.sopra.beans;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class Test {
+	
+	public static void main(String[] args) {
+		
+		
+		ApplicationContext context = new ClassPathXmlApplicationContext("springcontext.xml");
+		
+		Student stu = (Student)context.getBean("stu");
+		
+		System.out.println(stu);
+	}
+
+}
+
+
+assignments:
+```````````````
+inject collection type values (set & map)
+
+
+  -how to inject reference type values
+  -how to inject collection type values (list)
+  
+
+

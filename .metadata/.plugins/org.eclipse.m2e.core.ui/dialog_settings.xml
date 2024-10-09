@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="MavenProjectImportWizardPage">
+		<list key="rootDirectory">
+			<item value="C:\Users\njain\eclipse-workspace-JavaAdvTraining\SpringBoot_CRUD_UsedCase_JPA_MVC_"/>
+			<item value="C:\Users\njain\eclipse-workspace-JavaAdvTraining\SpringBoot_Demo_Maven"/>
+			<item value="C:\Users\njain\eclipse-workspace-JavaAdvTraining\SpringBoot_JPA_Maven"/>
+			<item value="C:\Users\njain\eclipse-workspace-JavaAdvTraining\SpringBoot_JPA_Pagenation_Lambok"/>
+			<item value="C:\Users\njain\eclipse-workspace-JavaAdvTraining\SpringBoot_JPQL_JPA"/>
+			<item value="C:\Users\njain\eclipse-workspace-JavaAdvTraining\SpringBoot_RESTAPI"/>
+			<item value="C:\Users\njain\eclipse-workspace-JavaAdvTraining\SpringBoot_RestAPI_CrudUseCase"/>
+			<item value="C:\Users\njain\eclipse-workspace-JavaAdvTraining\SpringBoot_RestAPI_Maven"/>
+			<item value="C:\Users\njain\eclipse-workspace-JavaAdvTraining\SpringBoot_WebDemo_Maven"/>
+			<item value="C:\Users\njain\eclipse-workspace-JavaAdvTraining\Cookie"/>
+			<item value="C:\Users\njain\eclipse-workspace-JavaAdvTraining\Hibernate_HOL"/>
+			<item value="C:\Users\njain\eclipse-workspace-JavaAdvTraining\SpringBoot_WebSocket_ChatApp2"/>
+			<item value="C:\Users\njain\eclipse-workspace-JavaAdvTraining\servletConfigAndContext"/>
+			<item value="C:\Users\njain\eclipse-workspace-JavaAdvTraining\Spring_Auto_Discovery"/>
+			<item value="C:\Users\njain\Downloads\SpringBoot_WebSocket_Queue_Topic"/>
+		</list>
+		<list key="projectNameTemplate">
+			<item value="[artifactId]"/>
+			<item value="[artifactId]-TRUNK"/>
+			<item value="[artifactId]-[version]"/>
+			<item value="[groupId].[artifactId]"/>
+			<item value="[groupId].[artifactId]-[version]"/>
+			<item value="[name]"/>
+		</list>
+	</section>
+	<section name="MavenProjectWizardLocationPage">
+		<list key="location">
+			<item value="C:\Users\njain\eclipse-workspace-JavaAdvTraining\Maven-Spring-AOP1"/>
+			<item value="C:\Users\njain\eclipse-workspace-JavaAdvTraining\n-spring-mvc-1\src\main\java\com\spring\App.java"/>
+			<item value="C:\Users\njain\eclipse-workspace\spring-mvc-orm-app\src\main\java\com\sopra\service\impl"/>
+		</list>
+		<list key="projectNameTemplate">
+			<item value="[artifactId]"/>
+			<item value="[artifactId]-TRUNK"/>
+			<item value="[artifactId]-[version]"/>
+			<item value="[groupId].[artifactId]"/>
+			<item value="[groupId].[artifactId]-[version]"/>
+			<item value="[name]"/>
+		</list>
+	</section>
+	<section name="MavenProjectWizardArchetypePage">
+		<item key="catalog" value="internal"/>
+		<list key="projectNameTemplate">
+			<item value="[artifactId]"/>
+			<item value="[artifactId]-TRUNK"/>
+			<item value="[artifactId]-[version]"/>
+			<item value="[groupId].[artifactId]"/>
+			<item value="[groupId].[artifactId]-[version]"/>
+			<item value="[name]"/>
+		</list>
+	</section>
+	<section name="Maven2ProjectWizardArchifactPage">
+		<list key="package">
+			<item value="com.spring"/>
+			<item value="com.spring.JUnit_Demo"/>
+			<item value="com.spring.N_spring_mvc1"/>
+			<item value="com.hibernate"/>
+		</list>
+		<list key="groupId">
+			<item value="com.spring"/>
+			<item value="com.hibernate"/>
+		</list>
+		<list key="artifactId">
+			<item value="Maven-Spring-AOP2"/>
+			<item value="JUnit_Demo"/>
+			<item value="n-spring-mvc-1"/>
+			<item value="N-spring-mvc1"/>
+			<item value="Registration_Spring_Hibernate_WebMvc_ORM_Xml"/>
+			<item value="Spring_Hibernate_WebMvc_ORM"/>
+			<item value="Spring_Hibernate_WebMVC_ORM_Registration"/>
+		</list>
+		<list key="projectNameTemplate">
+			<item value="[artifactId]"/>
+			<item value="[artifactId]-TRUNK"/>
+			<item value="[artifactId]-[version]"/>
+			<item value="[groupId].[artifactId]"/>
+			<item value="[groupId].[artifactId]-[version]"/>
+			<item value="[name]"/>
+		</list>
+		<list key="version">
+			<item value="0.0.1-SNAPSHOT"/>
+		</list>
+	</section>
+	<section name="MavenProjectWizardArtifactPage">
+		<list key="groupId">
+		</list>
+		<list key="name">
+		</list>
+		<list key="artifactId">
+		</list>
+		<list key="projectNameTemplate">
+			<item value="[artifactId]"/>
+			<item value="[artifactId]-TRUNK"/>
+			<item value="[artifactId]-[version]"/>
+			<item value="[groupId].[artifactId]"/>
+			<item value="[groupId].[artifactId]-[version]"/>
+			<item value="[name]"/>
+		</list>
+		<list key="version">
+			<item value="0.0.1-SNAPSHOT"/>
+		</list>
+	</section>
+	<section name="org.eclipse.m2e.core.pom.overview">
+	</section>
+	<section name="org.eclipse.m2e.core.pom.dependencies">
+	</section>
+</section>

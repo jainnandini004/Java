@@ -1,0 +1,167 @@
+Dependency injection can be achieved in spring in two ways
+
+  1.setter based injection
+  2.constructor based injection
+  
+  
+setter injection:
+``````````````````
+Injecting primitive and string-based values by setter method
+
+
+Student.java:
+`````````````
+package com.sopra.beans;
+
+import java.io.Serializable;
+
+public class Student implements Serializable{
+	
+	
+	private int stid;
+	private String stname;
+
+	public int getStid() {
+		return stid;
+	}
+
+	public void setStid(int stid) {
+		this.stid = stid;
+	}
+
+	public String getStname() {
+		return stname;
+	}
+
+	public void setStname(String stname) {
+		this.stname = stname;
+	}
+
+	public Student()
+	{
+		
+	}
+
+	@Override
+	public String toString() {
+		return "Student [stid=" + stid + ", stname=" + stname + "]";
+	}
+	
+	
+	
+
+}
+
+springcontext.xml:
+``````````````````
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+   <bean id="stu" class="com.sopra.beans.Student">
+      
+       <property name="stid">
+       
+            <value>300</value>
+       </property>
+         
+       <property name="stname" value="Sopra"/>
+ 
+   </bean>
+
+
+</beans>
+
+Test.java:
+```````````
+
+package com.sopra.beans;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class Test {
+	
+	public static void main(String[] args) {
+		
+		
+		
+		ApplicationContext context = new ClassPathXmlApplicationContext("springcontext.xml");
+		Student stu = (Student)context.getBean("stu");
+		
+		/*
+		 * System.out.println("student id: " + stu.getStid());
+		 * System.out.println("student name: " + stu.getStname());
+		 */
+		
+		
+		System.out.println(stu);
+		
+		
+	}
+
+}
+
+
+constructor based injection:
+````````````````````````````
+if we inject the values by calling the corresponding constructor of the 
+bean is called constructor injection.
+
+
+springcontext.xml:
+`````````````````
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+   <bean id="stu" class="com.sopra.beans.Student">
+   
+       <constructor-arg name="stid" value="300"></constructor-arg>
+       <constructor-arg name="stname" value="ram"></constructor-arg>
+       
+ 
+   </bean>
+
+
+</beans>
+
+Student.java
+`````````````
+package com.sopra.beans;
+
+import java.io.Serializable;
+
+public class Student implements Serializable{
+	
+	
+	private int stid;
+	private String stname;
+	public Student()
+	{
+		
+	}
+	public Student(int stid, String stname) {
+		super();
+		this.stid = stid;
+		this.stname = stname;
+	}
+
+	@Override
+	public String toString() {
+		return "Student [stid=" + stid + ", stname=" + stname + "]";
+	}
+	
+}
+
+
+note:
+`````
+when we apply both setter injection and construtor injection , spring container
+will take setter injection values.

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app>
+
+<!-- first servlet configuration  -->
+	<servlet>
+		<servlet-name>sopra</servlet-name>
+		<servlet-class>com.sopra.servlet.Servlet1</servlet-class>
+		
+		<init-param>
+		     <param-name>driver</param-name>
+		     <param-value>oracle.jdbc.driver.OracleDriver</param-value>
+		</init-param>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>sopra</servlet-name>
+		<url-pattern>/first</url-pattern>
+	</servlet-mapping>
+	
+	
+	<!-- second servlet configuration -->
+	
+	<servlet>
+		<servlet-name>sopra1</servlet-name>
+		<servlet-class>com.sopra.servlet.Servlet2</servlet-class>		
+			<init-param>	
+		     <param-name>url</param-name>
+		     <param-value>jdbc:oracle:thin:@localhost:1521:xe</param-value>
+		</init-param>		
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>sopra1</servlet-name>
+		<url-pattern>/second</url-pattern>
+	</servlet-mapping>
+
+  <!-- configuring global information -->
+
+   <context-param>
+   
+         <param-name>firm</param-name>
+         <param-value>sopra12</param-value>
+   </context-param>
+	
+</web-app>
+

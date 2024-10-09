@@ -1,0 +1,145 @@
+maven:
+``````
+maven is  a automation build tool
+
+ build:
+  
+    compile the source code
+	execute the test cases
+	package the entire project as a jar or war
+	fetching the dependencies
+	
+     maven/gradle
+
+	 
+pom file
+ 
+ 
+  -> project object model
+
+
+@Qualifier annotation
+````````````````````
+
+The @Qualifier annotation is used to resolve the autowiring conflict, 
+when there are multiple beans of same type.
+
+
+College.java:
+`````````````
+package com.sopra.beans;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+
+public class College {
+	
+	@Autowired
+	@Qualifier("stu2")
+	private Student student;
+
+	@Override
+	public String toString() {
+		return "College [student=" + student + "]";
+	}
+	
+	public College()
+	{
+		
+	}
+	
+
+}
+
+
+Student.java:
+`````````````
+package com.sopra.beans;
+
+public class Student {
+	
+	private int stid;
+	private String stname;
+	public int getStid() {
+		return stid;
+	}
+	public void setStid(int stid) {
+		this.stid = stid;
+	}
+	public String getStname() {
+		return stname;
+	}
+	public void setStname(String stname) {
+		this.stname = stname;
+	}
+	
+	
+   public Student()
+   {
+	   
+   }
+@Override
+public String toString() {
+	return "Student [stid=" + stid + ", stname=" + stname + "]";
+}
+   
+   
+}
+
+
+Test.java:
+```````````
+package com.sopra.beans;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class Test {
+	
+	public static void main(String[] args) {
+		
+		
+		ApplicationContext context = new ClassPathXmlApplicationContext("springcontext.xml");
+		College col = (College)context.getBean("college");
+		System.out.println(col);
+		
+	}
+
+}
+
+springcontext.xml:
+```````````````````
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd  
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+ <context:annotation-config></context:annotation-config>
+  
+ <bean id="college" class="com.sopra.beans.College">
+      
+     
+ </bean>
+ 
+ <bean id="stu1" class="com.sopra.beans.Student">
+ 
+    <property name="stid" value="100"/>
+    <property name="stname" value="ram"/>
+ </bean>
+ 
+ <bean id="stu2" class="com.sopra.beans.Student">
+ 
+    <property name="stid" value="200"/>
+    <property name="stname" value="nandini"/>
+ </bean>
+ 
+ 
+
+
+</beans>
+
+refer spring aop:
+`````````````````

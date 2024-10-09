@@ -1,0 +1,356 @@
+Hibernate inheritance mapping:
+````````````````````````````
+
+->there are three inheritance mapping strategies are there
+
+   1.table per hierarchy
+   2.table per concrete class
+   3.table per subclass
+   
+1.table per hierarchy:
+``````````````````````
+ in table per hierarchy single table is required to map the whole hierarchy
+ 
+ an extra column is added to the the table to identify the class.
+ 
+ null values are stored in the table.
+ 
+2.table per concrete class:
+````````````````````````````
+in case of table per concrete class, tables are created as per class.
+But duplicate column added in subclass tables.
+
+3.table per subclass:
+`````````````````````
+in this strategy, tables are created as per class but related by 
+foregin key.
+
+so there are no duplicate columns.
+
+
+
+ Employee emp = new Employee();
+ emp.setName("ram");
+ 
+ Regular_Employee re = new Regular_Employee();
+ re.setName("jain");
+ re.setSalary(70000);
+ re.setBonus(678);
+ 
+ Contract_Employee ce = new Contract_Employee();
+ ce.setName("rk");
+ ce.setPay_per_hour(8000);
+ ce.setContract_duration("9 hours");
+ 
+ type
+ `````
+ employee
+ regularemployee
+ contractemployee
+ 
+Employee.java:
+`````````````
+package com.sopra.entities;
+
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "type",discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorValue("employee")
+public class Employee {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private int id;
+	private String name;
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+
+}
+
+Regular_Employee.java:
+``````````````````````
+package com.sopra.entities;
+
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
+@Entity
+@DiscriminatorValue("regularemployee")
+public class Regular_Employee extends Employee {
+	
+	private float salary;
+	private int bonus;
+	public float getSalary() {
+		return salary;
+	}
+	public void setSalary(float salary) {
+		this.salary = salary;
+	}
+	public int getBonus() {
+		return bonus;
+	}
+	public void setBonus(int bonus) {
+		this.bonus = bonus;
+	}
+	
+
+}
+
+Contract_Employee.java:
+```````````````````````
+package com.sopra.entities;
+
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
+@Entity
+@DiscriminatorValue("contractemployee")
+public class Contract_Employee extends Employee {
+
+	
+	  private float pay_per_hour;
+	  private String contract_duration;
+	  
+	  
+	public float getPay_per_hour() {
+		return pay_per_hour;
+	}
+	public void setPay_per_hour(float pay_per_hour) {
+		this.pay_per_hour = pay_per_hour;
+	}
+	public String getContract_duration() {
+		return contract_duration;
+	}
+	public void setContract_duration(String contract_duration) {
+		this.contract_duration = contract_duration;
+	}
+	  
+	  
+	  
+	  
+}
+
+
+App.java:
+``````````
+package com.sopra;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.boot.Metadata;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+
+import com.sopra.entities.Contract_Employee;
+import com.sopra.entities.Employee;
+import com.sopra.entities.Regular_Employee;
+
+
+
+/**
+ * Hello world!
+ *
+ */
+public class App {
+	public static void main(String[] args) {
+
+		StandardServiceRegistry ssr = new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
+
+		Metadata meta = new MetadataSources(ssr).getMetadataBuilder().build();
+
+		SessionFactory factory = meta.getSessionFactoryBuilder().build();
+
+		Session session = factory.openSession();
+
+		Transaction transaction = session.beginTransaction();
+
+		Employee emp = new Employee();
+		emp.setName("Ram");
+		
+		Regular_Employee re = new Regular_Employee();
+		re.setName("jain");
+		re.setSalary(778787f);
+		re.setBonus(678);
+	
+	
+		Contract_Employee ce = new Contract_Employee();
+		ce.setName("xyz");
+		ce.setPay_per_hour(676);
+		ce.setContract_duration("8hours");
+		
+		
+		
+        session.save(emp);
+        session.save(re);
+        session.save(ce);
+        
+		transaction.commit();
+
+		System.out.println("successfully saved");
+		factory.close();
+		session.close();
+
+	}
+}
+
+hibernate.cfg.xml:
+``````````````````
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-configuration SYSTEM 
+"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+
+
+ <session-factory>
+	<!-- data base properties -->
+	<property name="connection.driver_class">oracle.jdbc.driver.OracleDriver</property>
+	<property name="connection.url">jdbc:oracle:thin:@localhost:1521:xe</property>
+	<property name="connection.username">sopra</property>
+	<property name="connection.password">sopra</property>
+
+<!-- hibernate properties -->
+	<property name="dialect">org.hibernate.dialect.Oracle9Dialect</property>
+	 <property name="show_sql">true</property>
+	<property name="format_sql">true</property>
+	<property name="hbm2ddl.auto">create</property>
+	
+	<!-- mapping file -->
+	<mapping class="com.sopra.entities.Employee"/>
+	<mapping class="com.sopra.entities.Regular_Employee"/>
+	<mapping class="com.sopra.entities.Contract_Employee"/>
+	</session-factory>
+
+</hibernate-configuration>
+table per concrete class strategie:
+```````````````````````````````````
+Employee.java:
+``````````````
+package com.sopra.entities;
+
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public class Employee {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private int id;
+	private String name;
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	
+	
+
+}
+
+Regular_Employee.java:
+```````````````````````
+package com.sopra.entities;
+
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
+@Entity
+
+public class Regular_Employee extends Employee {
+	
+	private float salary;
+	private int bonus;
+	public float getSalary() {
+		return salary;
+	}
+	public void setSalary(float salary) {
+		this.salary = salary;
+	}
+	public int getBonus() {
+		return bonus;
+	}
+	public void setBonus(int bonus) {
+		this.bonus = bonus;
+	}
+	
+
+}
+
+Contract_Employee.java:
+```````````````````````
+package com.sopra.entities;
+
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
+@Entity
+
+public class Contract_Employee extends Employee {
+
+	
+	  private float pay_per_hour;
+	  private String contract_duration;
+	  
+	  
+	public float getPay_per_hour() {
+		return pay_per_hour;
+	}
+	public void setPay_per_hour(float pay_per_hour) {
+		this.pay_per_hour = pay_per_hour;
+	}
+	public String getContract_duration() {
+		return contract_duration;
+	}
+	public void setContract_duration(String contract_duration) {
+		this.contract_duration = contract_duration;
+	}
+	  
+	  
+	  
+	  
+}
+
+
+
+assignment:
+````````````
+table per sub class strategy

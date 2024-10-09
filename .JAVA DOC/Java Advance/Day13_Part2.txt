@@ -1,0 +1,167 @@
+
+finder methods of Repository:
+`````````````````````````````
+package com.sopra.repository;
+
+import org.springframework.data.repository.CrudRepository;
+
+import com.sopra.entity.Student;
+
+public interface StudentRepository extends CrudRepository<Student, Integer> {
+
+	public Student findByLastName(String lastName);
+	public Student findByFirstName(String firstName);
+	public Student findByFirstNameOrStid(String firstName,int stid);
+}
+
+
+
+Test:
+``````
+package com.sopra;
+
+import java.util.Optional;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+
+import com.sopra.entity.Student;
+import com.sopra.repository.StudentRepository;
+
+@SpringBootApplication
+public class SpringbootJpaDemoApplication {
+
+	public static void main(String[] args) {
+		ApplicationContext context = SpringApplication.run(SpringbootJpaDemoApplication.class, args);
+	    StudentRepository repo = context.getBean(StudentRepository.class);
+	
+	     Student st = repo.findByFirstName("jain");
+	    
+		 System.out.println(st);
+		 
+		 Student st1 = repo.findByFirstNameOrStid("umesh", 107);
+		 
+		 System.out.println(st1);
+		    
+	}
+
+}
+
+
+
+lombok api:
+````````````
+https://projectlombok.org/download
+
+->DOUBLE CLICK ON downloaded file, click on specify location and upto eclipse.exe
+  choose the location
+
+->click on install/update
+
+->close it
+
+->restart the eclipse and then start to use lombok annotations on top of entity
+  classes 
+  
+ note: in pom.xml file add the lombok dependecy
+ 
+ 
+Student.java:
+``````````````package com.sopra.entity;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class Student {
+
+	 @Id
+	 private int stid;
+	 
+	 private String firstName;
+	 
+	 private String lastName;
+	 
+	 
+}
+
+
+StudentRepository.java:
+````````````````````````
+package com.sopra.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.sopra.entity.Student;
+
+
+public interface StudentRepository extends JpaRepository<Student,Integer> {
+
+	
+	
+}
+
+Test:
+`````
+package com.sopra;
+
+import java.util.List;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+
+import com.sopra.entity.Student;
+import com.sopra.repository.StudentRepository;
+
+@SpringBootApplication
+public class SpringbootJpaPaginationDemoApplication {
+
+	public static void main(String[] args) {
+     ApplicationContext context = SpringApplication.run(SpringbootJpaPaginationDemoApplication.class, args);
+	
+	 StudentRepository repo= context.getBean(StudentRepository.class);
+	    
+	 //Page<Student> findAll = repo.findAll(PageRequest.of(1,1));
+	
+	 //findAll.forEach(p->System.out.println(p));
+	 
+	  //List<Student> findAll = repo.findAll(Sort.by("firstName","lastName"));
+	 
+	  //findAll.forEach(p->System.out.println(p.getFirstName() + " " + p.getLastName()));
+	 
+	 //List<Student> findAll = repo.findAll(Sort.by(Sort.Direction.DESC, "firstName"));
+	 
+	 //findAll.forEach(p->System.out.println(p.getFirstName()));
+	 
+	 
+	  // repo.findAll(PageRequest.of(0, 2, Direction.DESC, "firstName")).forEach(p->System.out.println(p.getFirstName()));
+	    
+	}
+
+}
+
+
+application.properties:
+```````````````````````
+spring.datasource.url=jdbc:oracle:thin:@localhost:1521:xe
+spring.datasource.username=sopra
+spring.datasource.password=sopra
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true

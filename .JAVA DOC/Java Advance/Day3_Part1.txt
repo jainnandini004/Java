@@ -1,0 +1,514 @@
+->servlet collaboration / servlet chaining
+
+->servlet redirecting mechanism
+
+->@WebServlet annotation(alternative for web.xml)
+
+->session tracking techniques(cookies,urlrewriting,HttpSession)  
+
+
+
+servlet redirecting mechanism:
+```````````````````````````````
+
+  if we make a request to one servlet
+  requirement: need to redirect to some other web address
+  
+  
+     response.sendRedirect("address of desired location");
+	 
+	ex: response.sendRedirect("http://www.google.com");
+	 
+old websites --> new website addresses
+
+  
+  @WebServlet:
+  `````````````
+  Use the @WebServlet annotation to define a servlet component in a web 
+  application. This annotation is specified on a class and contains metadata 
+  about the servlet being declared. The annotated servlet must specify at 
+  least one URL pattern. This is done by using the urlPatterns or value 
+  attribute on the annotation.
+  
+  
+  
+MyServlet.java:
+````````````````
+package com.sopra.servlets;
+
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+
+@WebServlet("/redirect")
+public class MyServlet extends HttpServlet {
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		response.getWriter().println("welcome to servlet redirecting mechanism");
+		
+		response.sendRedirect("http://www.google.com");
+		
+		
+		
+	}
+
+}
+
+
+
+ServletCollaboration:
+`````````````````````
+   if we want to send some data from one servlet to any other resource
+   (html,jsp,servlet...)
+   
+   ->establishing communication in between servlet to any other resource
+   
+   
+   RequestDispatcher is one of the pre-defined interface
+   
+   
+FirstServlet.java:
+```````````````````
+package com.sopra.servlets;
+
+import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+
+@WebServlet("/FirstServlet")
+public class FirstServlet extends HttpServlet {
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		
+		response.getWriter().println("iam from first servlet");
+		
+		RequestDispatcher requestDispatcher = request.getRequestDispatcher("SecondServlet");
+		
+		//requestDispatcher.forward(request, response);
+		
+		response.getWriter().println("<br/>");
+		
+		requestDispatcher.include(request, response);
+		
+		
+	}
+
+}
+
+SecondServlet.java:
+````````````````````
+package com.sopra.servlets;
+
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+
+@WebServlet("/SecondServlet")
+public class SecondServlet extends HttpServlet {
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		
+		response.getWriter().println("iam from  second servlet");
+		
+	}
+
+}
+
+Session Tracking Techniques:
+`````````````````````````````
+session:
+````````
+  ->9am to 6pm
+  time interval in between login and logout is the session
+  
+  gmail(url) -> request
+  
+     -> username:
+	    password:
+		
+		 clicking on the login --> request
+		
+		   gmail inbox
+		   
+		   compose -> request 
+		   
+	each and every action which we are performing on the web page 
+	absolutely those are reequests.
+	
+	these requests can be processed by server(our servlet programs)
+	
+	
+	how the request will be moved to server?
+	
+	  by using one protocol (http)
+	  
+	  http: stateless protocol
+	  
+	  stateless -> it is not rembering any data
+	  
+  
+  since http is a stateless protocol, each and every request can be 
+  considering as a new request.
+  
+  we have to maintain the session
+  
+  by using session tracking techniques in servlets.
+  
+  
+    -cookies(server side)
+     -HttpSession(server side)
+   -UrlRewriting(server side)
+   -HidenForm Fields(client side and server side)
+   
+    
+   
+ goal: to maintain the state
+
+
+Cookie:
+```````
+A cookie is a small piece of information that is persisted between the 
+multiple client requests.
+
+ client1 -request --> server1
+ 
+          
+
+          resposne+cookie
+
+
+ client1 --request + cookie --> server1
+
+          response
+		  
+index.html:
+```````````
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+
+ <form action="FirstServlet">
+ 
+ Enter username: <input type="text" name="uname"/><br/>
+    <input type="submit" value="go"/>
+ 
+ </form>
+
+</body>
+</html>
+
+FirstServlet.java:
+``````````````````
+package com.sopra.servlets;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/FirstServlet")
+public class FirstServlet extends HttpServlet {
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		
+		String uname=request.getParameter("uname");
+		
+		
+		PrintWriter pw = response.getWriter();
+		
+		pw.println("welcome to " + uname);
+		
+		pw.println("<br/>");
+		
+       //Cookie object creation
+		Cookie cookie = new Cookie("c1",uname);
+		//add the cookie object to response
+		response.addCookie(cookie);
+		
+		//preparing form in the server(firstservlet)
+		pw.println("<form action='SecondServlet'>");
+		pw.println("<input type='submit' value='send'/>");
+		
+		pw.println("</form>");
+		
+		
+		
+		
+		
+	}
+
+}
+
+
+SecondServlet.java:
+````````````````````
+package com.sopra.servlets;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/SecondServlet")
+public class SecondServlet extends HttpServlet {
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		javax.servlet.http.Cookie[] cookie=request.getCookies();
+		response.getWriter().println((String)cookie[0].getValue());
+		
+		
+	}
+
+}
+
+
+assignment: 
+perform login,logout,profile using cookies in servlet.
+
+
+
+HttpSession:
+````````````
+server/container creates a session id for each user.
+
+   sopra --> session id
+   ram --> session id
+   .....
+   session id is unique
+   
+   
+ The server uses this session id to identify the particular user.
+ 
+ 
+    on top of HttpServletRequest object
+	
+	  HttpSession session = request.getSession()
+
+frequently used methods of HttpSession:
+```````````````````````````````````````
+
+getId()
+getLastAccessedTime()
+invalidate()
+
+
+index.html:
+```````````
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+
+ <form action="FirstServlet">
+  Enter Username: <input type="text" name="uname"><br/>
+  <input type="submit" value="go"/>
+ </form>
+ 
+</body>
+</html>
+
+FirstServlet.java:
+``````````````````
+package com.sopra.servlets;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+
+@WebServlet("/FirstServlet")
+public class FirstServlet extends HttpServlet {
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	
+		PrintWriter pw = response.getWriter();
+		
+		String u1 = request.getParameter("uname");
+		
+		
+		pw.println("welcome to : " + u1);
+		
+		//create the HttpSession object
+		
+		HttpSession session = request.getSession();
+		
+		session.setAttribute("uname", u1);
+		
+		pw.println("<br/>");
+		
+		pw.println("<a href='SecondServlet'>clickme</a>");
+		
+		
+	}
+
+}
+
+
+
+SecondServlet.java:
+`````````````````````
+package com.sopra.servlets;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+@WebServlet("/SecondServlet")
+public class SecondServlet extends HttpServlet {
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		
+		HttpSession session = request.getSession(false);
+		
+		
+		String n  = (String)session.getAttribute("uname");
+		PrintWriter pw = response.getWriter();
+		pw.println("Hello : " + n);
+		pw.println("<br/>");
+		pw.println("session creation time: " + session.getCreationTime());
+		pw.println("<br/>");
+		pw.println("session id: " + session.getId());
+		
+		
+		
+	
+	}
+
+}
+
+
+
+ASSIGNMENTS:
+``````````````
+
+ -HiddenFormFields
+ -UrlRewriting
+ -login,logout & profiles using cookies
+ 
+ 
+ 
+ EXAMPLE: gmail is implemented using cookies
+ 
+ -servlet redirecting mechanism
+ -servlet collobaration (forward and include)
+ -@WebServlet
+ -session tracking techniques
+    -cookies
+	-HttpSession
+	-HiddenFormFields
+	-UrlRewriting
+
+
+How to invalidate the session:
+``````````````````````````````
+package com.sopra.servlets;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Date;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+
+@WebServlet("/FirstServlet")
+public class FirstServlet extends HttpServlet {
+	
+	int count;
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	
+		PrintWriter pw = response.getWriter();
+		
+	
+		//create the HttpSession object
+		
+		HttpSession session = request.getSession(true);
+		
+		if(session.isNew())
+		{
+			pw.println("welcome to new user");	
+			pw.println("<br/>");
+			count=0;
+			
+		}
+		
+		else
+		{
+			pw.println("welcome back");
+			count++;
+			pw.println("<br/>");
+		}
+			pw.println("session creation time: " + new Date(session.getCreationTime()));
+			pw.println("<br/>");
+			pw.println("session last accessed time: " + new Date(session.getLastAccessedTime()));
+			pw.println("<br/>");
+			pw.println("session id: " + session.getId());
+			pw.println("<br/>");
+			pw.println("visited count: " + count);
+			
+		if(count>=5)
+		{
+			//destroying the session
+			session.invalidate();
+			
+		}
+		
+	}
+
+}
+
+
+	

@@ -1,0 +1,13 @@
+
+|
+java:S1128"JRemove this unused import 'org.springframework.data.jpa.repository.Query'.(ÄºöïþÿÿÿÿH™‹RMINORZ
+CODE_SMELL
+m	java:S1259"<This block of commented-out lines of code should be removed.(ÃÚ”ûþÿÿÿÿH›‹RMAJORZ
+CODE_SMELL
+y
+java:S1128"LRemove this unused import 'org.springframework.data.repository.query.Param'.(©”šôHœ‹RMINORZ
+CODE_SMELL
+h	java:S125&"<This block of commented-out lines of code should be removed.(ë«»ÄHž‹RMAJORZ
+CODE_SMELL
+g	java:S125"<This block of commented-out lines of code should be removed.(®Ô˜yHŸ‹RMAJORZ
+CODE_SMELL

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<list key="EGit.KnownHosts">
+		<item value="git.eclipse.org"/>
+		<item value="github.com"/>
+		<item value="bitbucket.org"/>
+	</list>
+	<list key="RepositorySelectionPage.UsedUris">
+		<item value="https://github.com/jainnandini004/Java-Advance.git"/>
+		<item value="http://data/image/pjpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/2wBDAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/wAARCABAAEADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD+viiiig/oAKKKKACiiigAooooAKhuLi3tLee7u54bW1tYZbi5ubiRIbe3t4UaSaeeaRljihijVpJZZGVI0VmdgoJqaqt9ZWup2V5pt/AlzY6ha3FleW0m7y7i0u4XguIH2lW2SwyPG21gcMcEHmgatdXva+tt7dbX6nzn/wANn/sef9HX/s1/+H0+GH/zUV3PgD9oH4DfFfV7rw/8LfjZ8I/iTr1lp0usXmieAfiR4O8Y6vaaTBc2tnNqlzpvh7WdRvINOhvL6ytZb2WFLaO5vLWB5RLcRK/86/8AwWZ/Yq/ZY/Z9+CnwM8R/Bn4K+Evh9rfiT9ovwv4S13UdDGqCfUvDd74S8Z313pNx9s1G7T7NNd6dZTv5aLLvt0w4XcD+83wT/Yv/AGXP2cvE+oeM/gh8F/Cfw58U6toNx4Y1HWtBGqfbLvQLrUNN1S40yU32o3kf2eXUNH0y6fbGsnm2cWHC7lYPp8dluSYfK8Jj6GIzWc8fLFQw1Oth8JGEZ4SdGNT28oV5OMZKquV0+d6apF5P2yf2QpJVgj/aq/Zvedn8tYU+OHwyaVpM7fLWMeJy5fd8u0Atu4xnive9D1/Q/E+l2mueG9a0nxDot+nm2Or6HqNnq2l3kYJUyWmoWE1xaXCbgV3wyuuQRnIr+Y//AIIwfsSfsrftL/st/E7xf8c/gx4Z+Ifiex/aG8Z+FLLXdVudds9StPD1n4E+GeqWumW91o2r6ZJDDBqGtapdRvGVnEt7KfNwEC9j4k+Grf8ABJv/AIKIfsvaT8B/Enie0/Zg/bL8TN4B8T/CHXNd1DXdG0LxI2veGvClxqGnzajNPdONAu/HHg7XdF1e+ku/ESW0ev6Fdate6XeNDQdmJ4cyx4/HZRgcfjXmeCpYirCni8LRjhsb9VoPE1qVGvRxEp06vsYzlTVWjyTcHFzg2r/0q0UUUHxYUUUUAfg5/wAF/P8Ak3n9nH/s67wbn/wh/iB/nqPrX7x1wHxC+FPwv+LenaZo/wAVPhz4F+JWk6Lq8Gv6Ppnj3wnoXi7T9K122guLW21nTrPX7C/t7LVYLa7u7eHULaOO6igubiJJQk0it39B62JzGFfK8qwCpzjPL6uPqTqOScKixc6EoqKSunBUWpN7"/>
+		<item value="https://github.com/jainnandini550/JavaAdvance_Project.git"/>
+		<item value="https://github.com/jainnandini550/Java-Advance-Project.git"/>
+		<item value="https://github.com/jainnandini550/Java_Advance_Projects.git"/>
+	</list>
+	<list key="CommitDialog.authorValues">
+		<item value="njain &lt;njain@ITEM-S73894.emea.msad.sopra&gt;"/>
+	</list>
+	<list key="CommitDialog.committerValues">
+		<item value="njain &lt;njain@ITEM-S73894.emea.msad.sopra&gt;"/>
+	</list>
+	<section name="org.eclipse.egit.ui.internal.staging.StagingView">
+		<item key="MAIN_SASH_FORM_ORIENTATION_VERTICAL" value="false"/>
+		<item key="HORIZONTAL_SASH_FORM_WEIGHT" value="500,500"/>
+		<item key="STAGING_SASH_FORM_WEIGHT" value="500,500"/>
+		<item key="sortItemState" value="true"/>
+	</section>
+	<section name="GitCommitMessageComponent">
+		<list key="C:\Users\njain\JavaAdvance_Project\.git">
+			<item value="empty"/>
+		</list>
+	</section>
+	<section name="org.eclipse.egit.ui.internal.fetch.FetchResultDialog.dialogBounds">
+		<item key="DIALOG_X_ORIGIN" value="660"/>
+		<item key="DIALOG_Y_ORIGIN" value="223"/>
+		<item key="DIALOG_WIDTH" value="616"/>
+		<item key="DIALOG_HEIGHT" value="458"/>
+		<item key="DIALOG_FONT_NAME" value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI"/>
+	</section>
+	<section name="org.eclipse.egit.ui.internal.push.PushResultDialog.dialogBounds">
+		<item key="DIALOG_X_ORIGIN" value="635"/>
+		<item key="DIALOG_Y_ORIGIN" value="223"/>
+		<item key="DIALOG_WIDTH" value="666"/>
+		<item key="DIALOG_HEIGHT" value="458"/>
+		<item key="DIALOG_FONT_NAME" value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI"/>
+		<list key="sashWeights">
+			<item value="600"/>
+			<item value="400"/>
+		</list>
+	</section>
+</section>

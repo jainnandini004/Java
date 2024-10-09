@@ -1,0 +1,144 @@
+ same application using @Entity and without student.hbm.xml:
+ ````````````````````````````````````````````````````````````
+ Student.java:
+ `````````````
+ package com.sopra.entity;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+//@Table(name = "student")
+public class Student {
+	
+	 @Id
+	 //@Column(name = "stid")
+	 private int stid;
+	 
+	// @Column(name="firstName")
+	 private String firstName;
+	 
+	 //@Column(name="lastName")
+	 private String lastName;
+	 
+	 
+	public int getStid() {
+		return stid;
+	}
+	public void setStid(int stid) {
+		this.stid = stid;
+	}
+	public String getFirstName() {
+		return firstName;
+	}
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	public String getLastName() {
+		return lastName;
+	}
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+	 
+	 public Student()
+	 {
+		 
+	 }
+
+}
+
+
+note:
+``````
+jpa is the specification/interfaces for orm(object relational mapping)
+-sunmicrosystem
+
+-hibernate is the popular one
+-ibatis
+-toplink
+
+
+hibernate.cfg.xml:
+``````````````````
+
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-configuration SYSTEM 
+"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+
+
+ <session-factory>
+	<!-- data base properties -->
+	<property name="connection.driver_class">oracle.jdbc.driver.OracleDriver</property>
+	<property name="connection.url">jdbc:oracle:thin:@localhost:1521:xe</property>
+	<property name="connection.username">sopra</property>
+	<property name="connection.password">sopra</property>
+
+<!-- hibernate properties -->
+	<property name="dialect">org.hibernate.dialect.Oracle9Dialect</property>
+	 <property name="show_sql">true</property>
+	<property name="format_sql">true</property>
+	<property name="hbm2ddl.auto">create</property>
+	
+	<!-- mapping file -->
+	<mapping class="com.sopra.entity.Student"/>
+	</session-factory>
+
+</hibernate-configuration>
+
+Test.java
+
+package com.hibernate;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.boot.Metadata;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+
+import com.hibernate.entity.Student;
+public class Test {
+	public static void main(String[] args) {
+		StandardServiceRegistry ssr = new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
+
+		Metadata meta = new MetadataSources(ssr).getMetadataBuilder().build();
+
+		SessionFactory factory = meta.getSessionFactoryBuilder().build();
+
+		Session session = factory.openSession();
+
+		Transaction transaction = session.beginTransaction();
+
+		Student stu = new Student();
+		stu.setId(102);
+		stu.setFirstname("kajol");
+		stu.setLastname("verma");
+		session.save(stu);
+
+		transaction.commit();
+
+		System.out.println("Operation Successful");
+		factory.close();
+		session.close();
+
+	}
+}
+
+
+cretae vs update of hbm2ddl.auto value:
+```````````````````````````````````````
+create:`
+```````
+when we give this property value as create, it will always drop the existing
+table and it will create the new table.
+
+update:
+```````
+when we give this property value as update, it will not drop the existing
+table just it will perform the operations on top of the existing table.

@@ -1,0 +1,224 @@
+ advanced java
+  
+    -jdbc
+    -servlets
+    -jsp
+	-spring
+	-hibernate
+	-spring boot
+	
+	
+    oracle installation -> 
+	
+	
+	oracle 11g express edition
+	
+	
+jdbc:
+
+  java database connectivity.
+  
+  java environment -> db environment
+  
+  to store the data 
+  or to perform the operations on the data
+      (select,insert,delte and update)
+	  
+	  
+	
+on top of the existing data, we performed db operations.
+
+ -insert the data
+ -update the data
+ -delete the data 
+ -read the data
+
+  
+   ->java environment
+   
+ db oprations -> 
+ 
+ 
+ jdbc :
+ `````
+ it is a technology given by sunmicrosystem
+ 
+ technology/specification/interfaces
+ 
+ implementatin classes are provided by different different database vendors
+ 
+   like oracle,mysql,sybase,ingress,redhat,postgres.
+   
+   in the form of jar files
+   
+   
+goal:
+
+ from java environment, we need to perform db operations
+ 
+ 
+ jdbc:
+ 
+ steps to develop/write the jdbc program:
+ ``````````````````````````````````````````
+ 
+   java<-------->db
+  
+
+each and every db provides 4 types of driver classes those are
+
+ 1.type1
+ 2.type2
+ 3.type3
+ 
+ 4.type4(java language)
+ 
+oracle database
+
+ type4 driver class name of oracle database?
+ 
+  ->oracle.jdbc.driver.OracleDriver
+  
+
+   
+ ->load the driver class
+ 
+     Class.forName("oracle.jdbc.driver.OracleDriver");
+	 
+ ->obtain the connectin from database
+ 
+    DriverManager.getConnection();
+   
+   jdbc:oracle:thin:@localhost:1521:xe
+   jdbc -main protocol
+   oracle - sub protocol
+   thin- nick name of type 4 driver of oracle
+   localhost - ip address of db machine
+   1521 - default port number of database oracle
+   xe - default global database name of oracle express edition
+   
+   
+  ->Create the Statement object
+  
+  
+   purpose:
+   Creates a Statement object for sending SQL statements to the database.
+   
+   
+   ->process the query
+   
+   
+      int x = statement.executeUpdate("insert/update/delete");
+	  
+   ->close the connection 
+   
+        connection.close();
+		
+		
+->load the drier class
+->obtain the connection
+->Statement object creation
+->Process the query
+->Close the connection
+
+
+example:
+`````````
+package com.sopra.jdbc;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+
+public class Test1 {
+	
+	
+	public static void main(String[] args) {
+		
+		try {
+			
+			
+		//load the driver class 
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		
+		System.out.println("driver class is loaded");
+		
+		Connection connection = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "sopra", "sopra");
+		System.out.println("i got the connection");
+		
+		//Statement object creation for sending sql statemnts to db
+		Statement statement = connection.createStatement();
+		System.out.println("statement object got created for sending sql queries to the db");
+		
+		//processing the queries
+		int x = statement.executeUpdate("insert into student values(800,'umesh')");
+		
+		System.out.println(x + "row(s) inserted");
+		
+		//close the conenction
+		connection.close();
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
+		
+	}
+
+}
+
+
+-update and delete
+dml operations -insert/update/delete
+
+statement.executeUpdate();
+
+
+select * from student;
+
+  
+statement.executeQuery()
+
+
+package com.sopra.jdbc;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.Statement;
+
+public class Test3 {
+
+	
+	public static void main(String[] args) throws Exception {
+		
+		
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","sopra","sopra");
+		Statement st = con.createStatement();
+		ResultSet rs = st.executeQuery("select * from student");
+		ResultSetMetaData rsmd = rs.getMetaData();
+		
+		
+		System.out.println("No.of columns in my table is : " + rsmd.getColumnCount());
+		
+		System.out.println("1st column data type and it's size is : " + rsmd.getColumnTypeName(1) + " " + rsmd.getPrecision(1));
+		System.out.println("2nd column data type and it's size is : " + rsmd.getColumnTypeName(2) + " " + rsmd.getPrecision(2));
+		
+		
+		for(int i=1;i<=rsmd.getColumnCount();i++)
+		{
+			System.out.print(rsmd.getColumnName(i) + "\s");
+		}
+		
+		System.out.println();
+		
+		while(rs.next())
+		{
+			System.out.println(rs.getInt(1) + " " + rs.getString(2));
+		}
+		
+		
+	}
+}

@@ -1,0 +1,8 @@
+<html>
+<body>
+<form action="/hello">
+<input type="submit" value="SUBMIT"/>
+
+</form>
+</body>
+</html>

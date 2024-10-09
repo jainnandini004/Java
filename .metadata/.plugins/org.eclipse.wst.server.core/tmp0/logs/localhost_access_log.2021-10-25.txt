@@ -1,0 +1,4 @@
+127.0.0.1 - - [25/Oct/2021:00:02:29 +0530] "GET / HTTP/1.1" 404 751
+127.0.0.1 - - [25/Oct/2021:00:09:22 +0530] "GET / HTTP/1.1" 404 751
+0:0:0:0:0:0:0:1 - - [25/Oct/2021:00:09:23 +0530] "GET /SpringBoot_Assignment_Validation/WEB-INF/classes/application.properties HTTP/1.1" 404 682
+127.0.0.1 - - [25/Oct/2021:09:27:06 +0530] "GET / HTTP/1.1" 404 751

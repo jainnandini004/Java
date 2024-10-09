@@ -1,0 +1,302 @@
+spring aop:
+```````````
+
+    aop --> aspect oriented programming
+	
+	oop -> object oriented programming
+	
+	
+	
+to separate the main logic with secondary logic
+
+
+   ->atm (withdrawl the money ) -> main logic
+   
+   secondary logic -> sms ->secondary logic
+   
+   authentication --> secondary logics
+   
+   
+->maintainence of the application will get improved
+
+   authentication 
+   before main logic   
+   sms service
+
+aspect,joinpoint,advice,weaving,proxy.....
+
+
+spring aop module:
+```````````````````
+aop -> aspect oriented programming
+
+oop -> object oriented programming
+
+
+   atm machine -> withdrawing/checking the balance --> primary logics
+   
+   secondary logics -> pin/sms  --> secondary logics/cross cutting concerns
+   
+ 
+AOP breaks the program logic into distinct parts(called concerns).
+It is used to increase modularity by cross cutting concerns.
+
+ 
+A cross cutting concern is a concern that can affect the whole application
+and should be centralized in one location
+
+ex:
+```
+ transaction management,authentication,logging,security.etc..
+ 
+ 
+ class Test{
+ 
+ 
+     public void m1();{//logging}
+	 public void m2();
+	 public void m3();
+	 public void m4();
+	 public void m5();
+	 
+	 public void n1();
+	 public void n2();
+	 
+	 public void p1();
+	 public void p2();
+	 public void p3();
+	 
+ }
+ 
+ 
+ aop -> aspect oriented programing
+ 
+ implementation 
+ 
+   ->aspectj
+   ->spring aop
+   ->jboss aop
+   
+   
+   //busines logic 
+   public void withdraw()
+   {
+   }
+   
+  aspect -> @Aspect declares the class as aspect
+  pointcut ->declares the pointcut expression
+        
+        authentication serivce
+		
+		@Before- before advice, it is applied before calling the actual method
+		@After
+		@AfterReturning
+		@Around
+		@AfterThrowing
+		
+		
+  advice
+  joinpoint-it is saying which advice is associated with which actual method.
+  
+  weaving
+  weaver
+  proxy
+  ...
+  
+   
+pointcut:
+`````````
+  pointcut is an expression language of spring AOP module.
+
+@Pointcut("execution(* Operation.*(..)")
+public void doSomething(){
+  //cross cutting conern logic/secondary logic
+}  
+ 
+ 
+ 
+ 
+ 
+ 
+ @Pointcut("execution(public * *(..)")
+ 
+ @Pointcut("execution(public Operation *(..)")
+ 
+ @Pointcut("execution(public Employee.set*(..)")
+ 
+ @Pointcut("execution(int Operation.*(..)")
+ 
+
+example on aop :
+```````````````` 
+  
+Operation.java(interface):
+``````````````````````````````
+
+package com.sopra;
+
+public interface Operation {
+	
+	void m1();
+	int n1();
+	void p1();
+
+}
+
+
+OperationImpl.java:
+````````````````````
+package com.sopra;
+
+public class OperationImpl implements Operation {
+
+	public void m1()
+	{
+		System.out.println("iam from m1 method ");
+	}
+
+	public int n1()
+	{
+		System.out.println("iam from n1 method");
+		return 3;
+	}
+	public void p1()
+	{
+		System.out.println("iam from p1 method");
+	}
+}
+
+TrackOperation.java:
+````````````````````
+package com.sopra;
+
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+
+@Aspect
+public class TrackOperation {
+	
+	
+	@After("execution(* com.sopra.*.*())")
+	public void myadvice(JoinPoint jp)//it is advice
+	{
+		System.out.println("additional concern");
+	}
+
+}
+
+App.java:
+``````````
+package com.sopra;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+/**
+ * Hello world!
+ *
+ */
+public class App 
+{
+    public static void main( String[] args )
+    {
+       ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
+       
+       Operation op = (Operation)context.getBean("op");
+       
+       op.m1();
+       op.n1();
+       op.p1();
+    }
+}
+
+
+config.xml:
+````````````
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd   
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+	<bean id="op" class="com.sopra.OperationImpl" />
+	<bean id="to" class="com.sopra.TrackOperation" />
+
+</beans>
+
+pom.xml:
+`````````
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.cts</groupId>
+	<artifactId>spring-demo-8</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<name>spring-demo-8</name>
+	<url>http://maven.apache.org</url>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+	</properties>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>5.0.5.RELEASE</version>
+		</dependency>
+
+
+		<!-- https://mvnrepository.com/artifact/org.aspectj/aspectjrt -->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>1.9.1</version>
+		</dependency>
+
+
+
+
+		<!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>1.9.1</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
+		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>3.9</version>
+		</dependency>
+
+
+	</dependencies>
+</project>

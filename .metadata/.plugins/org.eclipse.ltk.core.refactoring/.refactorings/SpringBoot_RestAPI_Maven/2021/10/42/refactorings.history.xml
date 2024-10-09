@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename package &apos;com.springboot.SpringBoot_RestAPI_Maven&apos; to &apos;com.springboot&apos;&#x0D;&#x0A;- Original project: &apos;SpringBoot_RestAPI_Maven&apos;&#x0D;&#x0A;- Original element: &apos;SpringBoot_RestAPI_Maven/src/main/java/com.springboot.SpringBoot_RestAPI_Maven&apos;&#x0D;&#x0A;- Renamed element: &apos;SpringBoot_RestAPI_Maven/src/main/java/com.springboot&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename package &apos;com.springboot.SpringBoot_RestAPI_Maven&apos;" flags="589830" hierarchical="false" id="org.eclipse.jdt.ui.rename.package" input="/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.springboot.SpringBoot_RestAPI_Maven" name="com.springboot" qualified="false" references="true" stamp="1634014744000" textual="false" version="1.0"/>
+</session>

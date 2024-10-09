@@ -1,0 +1,465 @@
+action tags in jsp:
+```````````````````
+there are many jsp action tags / elements .
+
+
+purpose: each jsp action tag is used to perform some specific task.
+
+
+these are used to control the flow between pages and to use java bean.
+
+   jsp:forward
+   jsp:include
+    jsp:useBean
+    jsp:setProperty
+    jsp:getProperty
+   jsp:param
+   ...
+  
+<jsp:forward page="xyz.jsp"/>
+
+  
+jsp:param:
+``````````
+jsp:param tag is not independent tag it is depending on jsp:forward
+while we are forwarding the request from one jsp to any other jsp with parameter
+then we have to go for jsp:param tag under jsp:forward.
+
+example on jsp:forward and jsp:param:
+``````````````````````````````````````
+
+index.jsp:
+``````````
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+   <h2>this is index page</h2>
+   <jsp:forward page="displaydate.jsp"> 
+       <jsp:param name="company" value="sopra"/>
+   </jsp:forward>
+</body>
+</html>
+
+displaydate.jsp:
+````````````````
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"
+    import="java.util.Date" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+   <%=
+   
+   "Today's date is:" + new Date()
+   
+   %>
+   
+   <br/>
+   <%=
+     "parameter value is: " + request.getParameter("company")
+   %>
+   
+   
+</body>
+</html>
+
+
+jsp:include:
+````````````
+jsp:include action tag is used to include the content of another resource
+it may be jsp, html or servlet.
+
+->the jsp include action tag includes the resource at request time so it is
+  better for dynamic pages because there might be changes in future.
+
+jsp:include action tag can be used to include static as well as 
+dynamic pages.
+
+index.jsp:
+``````````
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+   <h2>this is index page</h2>
+ 
+   
+   <jsp:include page="displaydate.jsp"/>
+   
+   
+   <h2>this is ending section of index page</h2>
+</body>
+</html>
+  
+
+displaydate.jsp:
+````````````````
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"
+    import="java.util.Date" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+   <%=
+   
+   "Today's date is:" + new Date()
+   
+   %>
+ 
+</body>
+</html>
+
+
+
+java bean:
+``````````
+a java bean is a normal java class that should follow some rules.
+
+ ->it should have no-arg constructor
+ 
+ ->it should be serializable
+ 
+ ->it should provide methods to set and get the values of the proeprties
+   known as setters and getters methods.
+
+->Why use JavaBean?
+According to Java white paper, it is a reusable software component. A bean encapsulates many objects into one object 
+so that we can access this object from multiple places. 
+Moreover, it provides easy maintenance.
+   
+   
+ex:
+```
+   import java.io.Serializable;
+   class Student implements Serializable
+   {
+   
+     private Address address;
+	 
+	 
+	 
+      private int stid;
+	  
+      public Student()
+	  {
+	  }
+	  
+	  public void setStid(int stid)
+	  {
+	     this.stid=stid;
+	  }
+	  
+	  public int getStid()
+	  {
+	  return stid;
+	  }
+   }
+   
+   
+why should we use javaBean:
+```````````````````````````
+it is a reusable software component.
+
+A bean encapsulates many objects into one object so that we can 
+access this object from multiple palaces.
+
+Student.java(java bean class):
+`````````````````````````````````
+package com.sopra.beans;
+
+import java.io.Serializable;
+
+public class Student implements Serializable{
+	
+	private int stid;
+	private String stname;
+	
+	public Student()
+	{
+		
+	}
+
+	public int getStid() {
+		return stid;
+	}
+
+	public void setStid(int stid) {
+		this.stid = stid;
+	}
+
+	public String getStname() {
+		return stname;
+	}
+
+	public void setStname(String stname) {
+		this.stname = stname;
+	}
+	
+	
+
+}
+
+without jsp:useBean action element:
+```````````````````````````````````
+useBean.jsp:
+````````````
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"
+    import="com.sopra.beans.Student"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+
+<% 
+   Student obj = new Student();
+   obj.setStid(200);
+   obj.setStname("sopra");
+   
+   out.println("Student id: " + obj.getStid());
+   out.println("Student name: " + obj.getStname());
+
+%>
+</body>
+</html>
+
+
+example using jsp:useBean,jsp:setProperty & jsp:getProperty:
+`````````````````````````````````````````````````````````````
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"
+    import="com.sopra.beans.Student"%>
+    
+<body>
+<jsp:useBean id="obj" class="com.sopra.beans.Student"></jsp:useBean>
+
+<jsp:setProperty property="stid" name="obj" value="300"/>
+<jsp:setProperty property="stname" name="obj" value="ram"/>
+
+Records are: <br/>
+
+Student id is : <jsp:getProperty property="stid" name="obj"/>
+<br/>
+Student name is: <jsp:getProperty property="stname" name="obj"/>
+
+
+</body>
+</html>
+
+
+how to set dynamic data and get dynamic data using jsp:useBean :
+````````````````````````````````````````````````````````````````
+index1.jsp:
+`````````
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+<form action="usebean.jsp">
+
+Enter Student id: <input type="text" name="stid"/><br/>
+Enter Student Name: <input type="text" name="stname"/><br/>
+<input type="submit" value="go"/>
+</form>
+</body>
+</html>
+
+
+usebean.jsp:
+```````````
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"
+    import="com.sopra.beans.Student"%>
+    
+<body>
+<jsp:useBean id="obj" class="com.sopra.beans.Student"></jsp:useBean>
+
+<%-- <jsp:setProperty property="stid" name="obj" />
+<jsp:setProperty property="stname" name="obj"/>
+ --%>
+ 
+ <jsp:setProperty property="*" name="obj"/>
+Records are: <br/>
+
+Student id is : <jsp:getProperty property="stid" name="obj"/>
+<br/>
+Student name is: <jsp:getProperty property="stname" name="obj"/>
+
+
+</body>
+</html>
+
+
+
+
+Registration use case:
+```````````````````````
+
+
+
+index.jsp:
+```````````
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+
+
+ <form action="process.jsp">
+ <pre>
+ 
+ Enter user name: <input type="text" name="name"/><br/>
+ Enter user email:<input type="text" name="email"/><br/>
+ Enter user password: <input type="password" name="password"/><br/>
+ <input type="submit" value="register"/>
+ 
+ 
+ 
+ </pre>
+ 
+ 
+ </form>
+</body>
+</html>
+
+process.jsp:
+`````````````
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"
+    import="com.sopra.beans.RegisterDao"%>
+
+<body>
+
+  <jsp:useBean id="obj" class="com.sopra.beans.User"></jsp:useBean>
+  
+  <jsp:setProperty property="*" name="obj"/>
+  
+  <%
+  
+   int status = RegisterDao.register(obj);
+   if(status>0)
+   {
+	   out.println("you are successfully registerd");
+   }
+  
+  %>
+  
+</body>
+</html>
+
+
+User.java:
+``````````
+package com.sopra.beans;
+
+import java.io.Serializable;
+
+public class User implements Serializable{
+	
+	
+	private String name;
+	private String email;
+	private String password;
+	public User()
+	{
+		
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
+	
+
+}
+
+
+RegisterDao.java:
+`````````````````
+package com.sopra.beans;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+
+public class RegisterDao {
+	
+	 static int status=0;
+	public static int register(User u)
+	{
+		try {
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		
+		Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","sopra","sopra");
+		
+		PreparedStatement ps = con.prepareStatement("insert into user1 values(?,?,?)");
+		
+		ps.setString(1, u.getName());
+		ps.setString(2, u.getEmail());
+		ps.setString(3, u.getPassword());
+		
+		status = ps.executeUpdate();
+		
+		
+		
+		
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
+		
+		
+		
+		return status;
+		
+	}
+
+}
+

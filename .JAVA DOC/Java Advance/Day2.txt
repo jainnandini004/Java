@@ -1,0 +1,504 @@
+Servlet:
+````````
+java - james gosling - 1995 
+
+ ->jse -> standalone /desktop applications
+ ->jee -> distributed/ web applications.
+ 
+ using servlet -> web applications
+ 
+  ->static web applications  -> html
+  ->dynamic web applications -> facebook,flipkart,gmail... 
+  
+  we are using server side technologies to develop dynamic web 
+  applications.
+  
+servlet -> server side technology
+purpose: to develop dynamic web applications
+
+given by: sun microsystem
+
+->www.oracle.com
+
+ sunmicrosystem -> oracle
+
+ 
+ 
+to develop web applications, usually we have to follow client server 
+architecture.
+
+The client server computing works with a system of request and response. 
+The client sends a request to the server and the server responds with the 
+desired information
+
+
+url: www.facebook.com -> fron the browser address bar 
+ browser -> client(request)
+ from the server -> response -> facebook home page
+ 
+ 
+ click on signin -> request
+ 
+ -> response -> signin page ->
+ 
+ 
+ ....
+ 
+ client -> 
+ server -> server is available remotely.
+ 
+ 
+ client is used to send the request and server is used to process the 
+ request and gives response back to the client.
+ 
+ using servlet technology -> web applications.
+ 
+ 
+ server -> tomcat 
+ 
+ so many servers are availabe in the real world
+ 
+  tomcat,glassfish,weblogic,websphere,redhat....
+  
+  tomcat -> apache software foundation -> web server
+  
+ ->https://www.flipkart.com/
+ 
+ Servlet is an interface -> javax.servlet
+ 
+ -> GenericServlet (javax.servlet)
+ -> HttpServlet(javax.servlet.http)
+ 
+ note: all the advanced java packages starts with javax.
+ 
+ note: all the core java packages starts with java.
+ 
+   java.sql
+   java.lang
+   java.io
+   java.util.
+   
+   
+ how we can define our own servlet:
+ `````````````````````````````````
+ 
+ ->by implemeting Servlet interface
+ ->by extending GenericServlet
+ ->by extending HttpServlet
+ 
+ 
+ class MyServlet implements Servlet
+ {
+    //5 methods (init,destroy,service,getServletConfig,getServletInfo)
+ }
+ 
+ 
+ 
+ class MyServlet extends GenericServlet
+ {
+    //only service
+ }
+ 
+ class MyServlet extends HttpServlet
+ {
+   //only service 
+ }
+ 
+ protocol independent applications-> any protocol support (http,smtp,tcp...)
+ 
+ protocol dependent applications ->using http protocol
+ 
+ note:
+ 
+   maintaing the protocols is very expensive.
+   
+  
+why web.xml file is required?
+
+  -> deployment descriptor
+
+
+client --> to whom we are sending the request -> server
+
+ src/main/webapp/WEB-INF/web.xml:
+ ``````````````````````````````````
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app>
+<servlet>
+  <servlet-name>sopra</servlet-name>
+  <servlet-class>com.sopra.servlets.MyServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+  <servlet-name>sopra</servlet-name>
+  <url-pattern>/display</url-pattern>
+</servlet-mapping>
+
+
+</web-app>
+
+src/main/java
+`````````````
+ com.sopra.servlet
+
+MyServlet.java:
+``````````````` 
+package com.sopra.servlets;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+//servlet class
+public class MyServlet extends HttpServlet {
+	
+	
+	//
+	 public void doGet(HttpServletRequest request,HttpServletResponse response) throws IOException
+	 {
+		 response.setContentType("text/html");
+		 PrintWriter pw =  response.getWriter();
+		 
+		 pw.println("<h1>welcome to servlets</h1>");
+	 }
+
+}
+
+->select dynamic web project 
+->add runtime -> add the server
+->Finish
+->under src/main/java -> create one package and define one servlet class
+  by extending HttpServlet
+->under src/webapp/WEB-INF/web.xml
+
+
+
+form handling in servlet:
+````````````````````````
+html form
+
+   -> submit
+   
+      -> control goes to respective servlet 
+	  
+	    -> write the business logic
+		
+		   -> return response back to the client
+		   
+
+under webapps folder:
+``````````````````````		   
+index.html:
+````````````
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+
+
+	<form action="add">
+		<pre>
+         Enter first number: &nbsp;<input type="text" name="t1" /><br/>
+         Enter second number: <input type="text" name="t2" /><br />
+         <input type="submit" value="add" />
+     </pre>
+	</form>
+
+</body>
+</html>
+
+AddServlet.java:
+````````````````
+package com.sopra.servlets;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+
+public class AddServlet extends HttpServlet {
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		//business logic
+		int x = Integer.parseInt(request.getParameter("t1"));
+		int y = Integer.parseInt(request.getParameter("t2"));
+		
+		int z = x+y;
+		
+		PrintWriter pw = response.getWriter();
+		pw.println("<h2>");
+		pw.println("the sum is : " + z);
+		pw.println("</h2>");
+	}
+
+}
+
+web.xml:
+`````````
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app>
+
+
+	<servlet>
+		<servlet-name>Ram</servlet-name>
+		<servlet-class>com.sopra.servlets.AddServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>Ram</servlet-name>
+		<url-pattern>/add</url-pattern>
+	</servlet-mapping>
+</web-app>
+
+
+url:
+````
+ http://localhost:2021/form-handling/index.html
+ 
+ 
+ http://localhost:2021/form-handling/add?t1=200&t2=678
+ 
+ 
+http://localhost:2021/form-handling/add
+
+
+doGet() and doPost():
+``````````````````````
+if we want to handle very sensitive data it is highly recommended to override
+doPost() in servlet class make sure html form method type must be post
+
+form method by default value is get
+
+
+->if we want to handle insensitive(normal data) we can happily go for
+  override doGet()
+  
+  
+ index.html:
+`````````````
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+
+
+	<form action="add" method="post">
+		<pre>
+         Enter first number: &nbsp;<input type="text" name="t1" /><br/>
+         Enter second number: <input type="text" name="t2" /><br />
+         <input type="submit" value="add" />
+     </pre>
+	</form>
+
+</body>
+</html>
+
+AddServlet.java:
+`````````````````
+package com.sopra.servlets;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+
+public class AddServlet extends HttpServlet {
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		//business logic
+		int x = Integer.parseInt(request.getParameter("t1"));
+		int y = Integer.parseInt(request.getParameter("t2"));
+		
+		int z = x+y;
+		
+		PrintWriter pw = response.getWriter();
+		pw.println("<h2>");
+		pw.println("the sum is : " + z);
+		pw.println("</h2>");
+	}
+
+}
+
+
+ServletConfig and ServletContext:
+``````````````````````````````````
+ 
+ ServletConfig is for configuring specific information to a specific
+ servlet.
+ 
+ in web.xml under servlet tag using <init-param> tag we generally configured
+ this servlet information.
+ 
+ ServletConfig object is per each and  every servlet of entire web 
+ application.
+ 
+ 
+ ->ServletContext, it is used for specifiying common/global information 
+   of a web applciatin, which can be used by all the servlets.
+   
+ ->in web.xml using <context-param> tag we can configured
+ 
+ ->ServletContext object is per one web application.
+ 
+ 
+FirstServlet.java:
+``````````````````
+package com.sopra.servlets;
+
+import java.io.IOException;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class FirstServlet extends HttpServlet {
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		
+		
+		ServletConfig config = this.getServletConfig();
+		
+		String value = config.getInitParameter("driver");
+		
+		response.getWriter().println("<h1>" + value + "</h1>");
+		
+		
+		
+		ServletContext context = this.getServletContext();
+		
+		String value2 = context.getInitParameter("firm");
+		response.getWriter().println("<h1>" + value2 + "</h1>");
+		
+	}
+
+}
+
+SecondServlet.java:
+```````````````````
+package com.sopra.servlets;
+
+import java.io.IOException;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+
+public class SecondServlet extends HttpServlet {
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	
+		
+
+		ServletConfig config = this.getServletConfig();
+		
+		String value = config.getInitParameter("url");
+		
+		response.getWriter().println("<h1>" + value + "</h1>");
+		
+		
+		
+        ServletContext context = this.getServletContext();	
+		String value2 = context.getInitParameter("firm");
+		response.getWriter().println("<h1>" + value2 + "</h1>");    
+		
+	
+	}
+
+}
+
+
+web.xml:
+`````````
+
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app>
+
+<!-- first servlet configuration  -->
+	<servlet>
+		<servlet-name>Ram</servlet-name>
+		<servlet-class>com.sopra.servlets.FirstServlet</servlet-class>
+		
+		<init-param>
+		
+		     <param-name>driver</param-name>
+		     <param-value>oracle.jdbc.driver.OracleDriver</param-value>
+		</init-param>
+		
+		
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>Ram</servlet-name>
+		<url-pattern>/first</url-pattern>
+	</servlet-mapping>
+	
+	
+	<!-- second servlet configuration -->
+	
+	<servlet>
+		<servlet-name>Ram1</servlet-name>
+		<servlet-class>com.sopra.servlets.SecondServlet</servlet-class>
+		
+			<init-param>
+		
+		     <param-name>url</param-name>
+		     <param-value>jdbc:oracle:thin:@localhost:1521:xe</param-value>
+		</init-param>
+		
+		
+		
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>Ram1</servlet-name>
+		<url-pattern>/second</url-pattern>
+	</servlet-mapping>
+
+  <!-- configuring global information -->
+
+   <context-param>
+   
+         <param-name>firm</param-name>
+         <param-value>sopra</param-value>
+   </context-param>
+
+
+
+	
+</web-app>
+
+
+  -formhandling
+  -doGet vs doPost
+  -ServletConfig vs ServletContext
+  -assigment: ....

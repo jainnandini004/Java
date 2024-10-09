@@ -1,0 +1,157 @@
+
+how to send the data from view to controller and then controller to view:
+```````````````````````````````````````````````````````````````````````````
+RegistrationController.java:
+```````````````````````````
+package com.sopra.controllers;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.sopra.beans.Student;
+
+@Controller
+public class RegistrationController {
+	
+	@RequestMapping("/showreg")
+	public ModelAndView showRegistrationPage()
+	{
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("userReg");
+		return mv;
+		
+	}
+	
+	@RequestMapping(value="/registerUser",method = RequestMethod.POST)
+	public ModelAndView registerStudent(HttpServletRequest request,HttpServletResponse response)
+	{
+		
+		String stid = request.getParameter("stid");
+		String firstName = request.getParameter("firstName");
+		String lastName = request.getParameter("lastName");
+		
+		Student stu = new Student();
+		stu.setStid(Integer.parseInt(stid));
+		stu.setFirstName(firstName);mv.
+	st	stu.setLastName(lastName);
+		
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("stu", stu);
+		mv.setViewName("success");
+		
+		return mv;
+		
+		
+	}
+	
+	
+	
+
+}
+
+Student.java:
+`````````````
+package com.sopra.beans;
+
+public class Student {
+	
+	private int stid;
+	private String firstName;
+	private String lastName;
+	
+	public Student()
+	{
+		
+	}
+
+	public int getStid() {
+		return stid;
+	}
+
+	public void setStid(int stid) {
+		this.stid = stid;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	@Override
+	public String toString() {
+		return "Student [stid=" + stid + ", firstName=" + firstName + ", lastName=" + lastName + "]";
+	}
+	
+	
+
+}
+
+userReg.jsp:
+`````````````
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+
+  <h2>Registration page</h2>
+  <form action="registerUser" method="post">
+  
+     <pre>
+      Enter Student Id: <input type="text" name="stid"/><br/>
+      Enter Student FirstName: <input type="text" name="firstName"/><br/>
+      Enter Student LastName: <input type="text" name="lastName"/><br/>
+      <input type="submit" value="register"/>
+      
+     
+     </pre>
+  
+  </form>
+
+</body>
+</html>
+
+success.jsp:
+`````````````
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"
+    isELIgnored="false"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+Students Records are: <br/>
+${stu}
+</body>
+</html>
+
+
+ 
+  assignment:
+  ```````````
+    on top of this application apply spring jdbc module to store
+	student's data in the corresponding student table of db.
+	

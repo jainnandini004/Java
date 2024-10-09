@@ -1,0 +1,178 @@
+Spring Rest application crud usecase:
+``````````````````````````````````````
+Department.java:
+````````````````
+package com.sopra.entity;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+public class Department {
+	@Id
+	private int departmentId;
+	private String departmentName;
+	private String departmentAddress;
+	private String departmentCode;
+
+}
+
+
+DepartmentController.java:
+```````````````````````````
+package com.sopra.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.sopra.entity.Department;
+import com.sopra.service.DepartmentService;
+
+@RestController
+public class DepartmentController {
+	
+	@Autowired
+	private DepartmentService service;
+	
+	@PostMapping("/department")
+	public Department saveDepartment(@RequestBody Department department)
+	{
+		
+		return service.saveDepartment(department);
+		
+	}
+	
+	@GetMapping("/departments")
+	public List<Department> fetchAllDepartments()
+	{
+		
+		return service.fetchAllDepartments();
+	}
+	
+	@GetMapping("/department/{departmentId}")
+	public Department fetchById(@PathVariable("departmentId") int departmentId)
+	{
+		return service.fetchById(departmentId);
+	}
+	
+	@DeleteMapping("/department/{id}")
+    public String deleteById(@PathVariable("id") int departmentId)
+    {
+		service.deleteById(departmentId);
+    	return  "department - "  + departmentId + " deleted successfully";
+    }
+	
+	@PutMapping("/department/{id}")
+	public Department updateDepartment(@PathVariable("id") int departmentId, @RequestBody Department department)
+	{
+		return service.updateDepartment(departmentId,department);
+	}
+	
+
+}
+
+/*localhost:2021/department->post
+body raw json
+
+{
+"DepartmentId":100,
+"DepartmentName":"csc",
+"DepartmentAddress":"hyd",
+"DepartmentCode":"csc-001"
+}
+}*/
+
+DepartmentRepository.java:
+```````````````````````````
+package com.sopra.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.sopra.entity.Department;
+
+public interface DepartmentRepository extends JpaRepository<Department, Integer> {
+
+}
+
+
+DepartmentService.java:
+`````````````````````````
+package com.sopra.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.sopra.entity.Department;
+import com.sopra.repository.DepartmentRepository;
+
+@Service
+public class DepartmentService {
+	
+	@Autowired
+	private DepartmentRepository repository;
+	
+	public Department saveDepartment(Department department) {
+		// TODO Auto-generated method stub
+		return repository.save(department);
+	}
+	
+	
+	public List<Department> fetchAllDepartments()
+	{
+		
+		return repository.findAll();
+		
+	}
+	
+	public Department fetchById(int departmentId)
+	{
+		return repository.findById(departmentId).get();
+	}
+	
+	public void deleteById(int departmentId) {
+
+		repository.deleteById(departmentId);
+	}
+	
+	public Department updateDepartment(int departmentId, Department department) {
+		// TODO Auto-generated method stub
+
+		Department deptDb = repository.findById(departmentId).get();	
+		
+		deptDb.setDepartmentName(department.getDepartmentName());
+		deptDb.setDepartmentAddress(department.getDepartmentAddress());
+		deptDb.setDepartmentCode(department.getDepartmentCode());
+		
+		return repository.save(deptDb);
+	}
+	
+
+}
+
+application.properties:
+```````````````````````
+server.port=2021
+spring.datasource.url=jdbc:oracle:thin:@localhost:1521:xe
+spring.datasource.username=sopra
+spring.datasource.password=sopra
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+spring.jpa.database-platform=org.hibernate.dialect.Oracle10gDialect
+
+
+
+
+assignment:
+```````````
+
+  fetchByDepartmentNameandAddress(String departmentName,String departmentAddress)

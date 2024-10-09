@@ -1,0 +1,230 @@
+Hibernate:
+```````````
+
+hibernate is a orm framework
+
+orm:
+
+  object relational mapping
+  
+   dealing with java object --> database table
+   
+      1 object --> 1 row of the table
+
+instead of working on sql queries we can peform on top of our entity 
+class.
+
+   bean class
+   entity class
+   
+   
+  hibernate: to implment persistence logic
+  
+   jdbc 
+   spring jdbc
+      
+	    ->
+   
+   
+    hibernate
+	hibernate architecutre includes many objects
+	
+	 -persistence object
+	 -session factory
+	 -transaction factory
+	 -connection factory
+	 -session 
+	 -transaction
+	 ....
+	 
+
+steps to follow to develop hibernate application:
+`````````````````````````````````````````````````
+1.creat the maven project 
+2.add the hibernate core maven dependecy in pom.xml
+3.under src/main/java right click -> new -> xml file(student.hbm.xml file)
+4.under src/main/java right click -> new -> xml file(hibernate.cfg.xml)
+5.under src/main/java create two packages (com.sopra.entity --> entity class, 
+  com.sopra-> test class)
+
+6.prepare entity class
+7.prepare test class
+8.run the application and check the db
+
+
+
+pom.xml:
+````````
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.sopra</groupId>
+  <artifactId>hibernate-demo-1</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>hibernate-demo-1</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+    
+    <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
+<dependency>
+    <groupId>org.hibernate</groupId>
+    <artifactId>hibernate-core</artifactId>
+    <version>5.5.7.Final</version>
+</dependency>
+    
+  </dependencies>
+</project>
+
+
+student.hbm.xml:
+````````````````
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+<class name="com.sopra.entity.Student" table="student">
+       
+       <id name="stid">
+            <generator class="assigned"></generator>
+       </id>
+       <property name="firstName"></property>
+       <property name="lastName"></property>
+       
+       
+</class>
+
+
+</hibernate-mapping>
+
+hibernate.cfg.xml:
+`````````````````````
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-configuration SYSTEM 
+"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+
+
+ <session-factory>
+	<!-- data base properties -->
+	<property name="connection.driver_class">oracle.jdbc.driver.OracleDriver</property>
+	<property name="connection.url">jdbc:oracle:thin:@localhost:1521:xe</property>
+	<property name="connection.username">sopra</property>
+	<property name="connection.password">sopra</property>
+
+<!-- hibernate properties -->
+	<property name="dialect">org.hibernate.dialect.Oracle9Dialect</property>
+	 <property name="show_sql">true</property>
+	<property name="format_sql">true</property>
+	
+	<!-- mapping file -->
+	<mapping resource="student.hbm.xml"/>
+	</session-factory>
+
+</hibernate-configuration>
+
+Student.java:
+`````````````
+package com.sopra.entity;
+
+public class Student {
+	
+	 private int stid;
+	 private String firstName;
+	 private String lastName;
+	public int getStid() {
+		return stid;
+	}
+	public void setStid(int stid) {
+		this.stid = stid;
+	}
+	public String getFirstName() {
+		return firstName;
+	}
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	public String getLastName() {
+		return lastName;
+	}
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+	 
+	 public Student()
+	 {
+		 
+	 }
+
+}
+
+Test.java:
+``````````
+ package com.sopra;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.boot.Metadata;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+
+import com.sopra.entity.Student;
+
+/**
+ * Hello world!
+ *
+ */
+public class App {
+	public static void main(String[] args) {
+
+		StandardServiceRegistry ssr = new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
+
+		Metadata meta = new MetadataSources(ssr).getMetadataBuilder().build();
+
+		SessionFactory factory = meta.getSessionFactoryBuilder().build();
+
+		Session session = factory.openSession();
+
+		Transaction transaction = session.beginTransaction();
+
+		Student stu = new Student();
+		stu.setStid(102);
+		stu.setFirstName("ram");
+		stu.setLastName("s");
+
+		  session.save(stu);
+
+		transaction.commit();
+
+		System.out.println("successfully saved");
+		factory.close();
+		session.close();
+
+	}
+}
+
+
+ note:
+ ````
+ right click on the project, add ojdbc jar file for our database.
+ 
+ 

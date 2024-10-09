@@ -1,0 +1,67 @@
+package com.springboot;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import com.springboot.entity.TeacherEntity;
+import com.springboot.repository.TeacherRepository;
+import com.springboot.service.TeacherService;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest
+class SpringBootRestApiMockitoApplicationTests {
+
+	@Autowired
+	private TeacherService service;
+
+	// -------------Here we want to mock repository means create dummy for the
+	// mock-----------------------------------------
+	@MockBean
+	private TeacherRepository repository;
+
+	@Test
+	public void fetchAllTest() {
+		when(repository.findAll())// repository call without of hitting Database
+				.thenReturn(Stream.of(new TeacherEntity(60, "Rashmi", "Social Studies")).collect(Collectors.toList()));
+		assertEquals(1, service.fetchAll().size());
+		// in mock repository only the above record considered
+
+	}
+
+	/*
+	 * @Test public void fetchByIdTest() { int id = 71;
+	 * when(repository.findById(id))// repository call without of hitting Database
+	 * .thenReturn(Stream.of(new TeacherEntity(60, "Rashmi",
+	 * "Social Studies")).collect(Collectors.toList())); assertEquals(1,
+	 * service.fetchById().size()); }
+	 */
+	
+	@Test
+	public void saveTest() {
+		TeacherEntity teacher=new TeacherEntity(50,"Deepak","Math");
+		when(repository.save(teacher))// repository call without of hitting Database
+				.thenReturn(teacher);
+		assertEquals(2, service.save(teacher));
+	}
+	
+	@Test
+	public void deleteByIdTest() {
+		int id=60;
+		service.deleteById(id);
+		verify(repository,times(1)).deleteById(id);// repository call without of hitting Database
+		
+		
+	}
+}

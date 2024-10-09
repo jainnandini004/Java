@@ -1,0 +1,274 @@
+jsp
+```
+   java server pages
+   
+   
+   
+->jsp is also a technology given by sunmicrosystem
+
+->implementations are provided by server vendors
+
+->tomcat server -> server container
+
+
+
+    servlet container->it is responsible to process all the servlet classes
+	jsp container -> it is responsible to process all the jsp pages
+	ejb container
+	jsf container
+	
+->interfaces
+
+ implementations are provided by  server vendors
+   
+ how these implementations are availabe in the server?
+ 
+    in the form of jar files
+	
+	 for the servlet -> servlet-api.jar
+	 for the jsp -> jsp-api.jar
+	
+	 
+	 
+purpose of servlet --> to develop dynamic web pages
+
+purpose of jsp --> to develop dynamic web pages
+
+	drawbacks of servlet:
+	
+	  1.not recommended to have both  business logic + presentation logic in single servlet class
+	  2.java knowledge is required to write the servlet class for non java 
+	    programmers understanding the servlet is very much typical who has
+		no knowledge on core java.
+		
+	  3.everytime restart the server to make changes affected.
+	  
+	  
+jsp:
+```
+ 1. jsp is  a tag based programming language
+ 
+ 2. inside the jsp we also can write html tags + jsp tags
+ 
+ 3. non it programmers can easily understand this jsp technology
+ 
+ 4. we no need to restart the server just by resending the request
+    automatically changes gets affected.
+	
+	
+in jsp technology, we do have three types of tags
+
+   1.scritpting tags/elements
+
+   2.directive tags/elements
+
+   3.action tags/elements
+
+
+scripting tags:
+```````````````
+
+purpose: to insert the java code in jsp page.
+
+
+   scripting tags can be again segarated into three types.
+     
+	    1.scriptlet element
+		2.expression element
+		3.declarative eleemnt
+		
+		
+1..scriptlet element:
+
+  syntax:  
+ 
+        <%  
+                 //java code
+         %>		
+   
+   
+ where did you keep our jsp files?
+ 
+   under webapp folder
+   
+ what is the extension for our jsp files?
+ 
+   <filename>.jsp
+   
+   
+ when we run the jsp file, jsp page is completely translated into 
+ equivalent servlet class.
+ 
+ 
+ out -> JspWriter is the class which is extends from PrintWriter
+ 
+ out -> impliticit object of JspWriter 
+   
+   
+     9 implicit objects
+	 
+	 out,request,response,application,page,exception,...
+	 
+example of scriptlet tag:
+``````````````````````````
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+  <h1>welcome to jsp technology from sopra using html tag</h1>
+  
+  <br/>
+  
+ 
+  
+   <%--scriptlet tag --%>
+  <%
+  out.println("<h1>");
+  out.println("welcome to jsp technology from sopra using jsp scriptlet tag");
+  out.println("</h1>");
+  %>
+</body>
+</html>
+
+expression tag:
+````````````````
+syntax:
+
+   <%= 
+
+      //java code
+   %> 
+   
+example:
+`````````
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+
+<%--expression tag --%>
+
+<h1>
+ <%=
+ 
+ "welcome to jsp using expression tag" 
+ 
+ 
+ %>
+ 
+ </h1>
+
+</body>
+</html>
+
+
+
+declarative tag:
+`````````````````
+
+ if we want to declare any variables or to define methods 
+ we should use declarative tag.
+
+syntax:
+
+   <%!
+
+    //declare the variable or
+    // define the method
+   %>
+   
+ example:
+ 
+   <%!
+     int a= 100;
+	 void m1()
+	 {
+	 
+	 }
+    
+	%>
+
+class _ScriptLet
+{
+
+     int a= 100;
+	 void m1()
+	 {
+	 
+	 }
+   
+  _jspService()
+  {
+     
+  }
+  
+}
+
+
+note:
+````
+using scirptlet or expression we can declare the variable but we cannot
+define the method.
+
+using declarative tag, we can declare the variables and we can 
+define the methods too.
+
+example:
+`````````
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+
+<%!
+  int a=100;
+  int square(int x)
+  {
+	 return x*x; 
+  }
+
+%>
+
+
+<%
+
+out.println("a value is : " +a);
+int x = square(5);
+out.println("<br/>");
+out.println("square value is: " + x);
+
+%> 
+</body>
+</html>
+
+scripting tags,directive tags, action tags 
+  -scriptlet tags
+  -expression tag
+  -declarative tag
+  
+  
+directive tags:
+```````````````
+purpose:
+````````
+
+    ->include directive
+	->page directive
+	->taglib directive(custom tags)
+	
+	

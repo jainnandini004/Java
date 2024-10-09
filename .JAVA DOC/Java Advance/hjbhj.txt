@@ -1,0 +1,21 @@
+  <speed>0</speed>
+    <squawk>1000</squawk>
+    <radar>F-LFBO6</radar>
+    <aircraft1>A321</aircraft1>
+    <registration2>F-GTAP</registration2>
+    <last__update>1496271341</last__update>
+    <departure>LFBO</departure>
+    <arrival>LFPO</arrival>
+    <name1>AF6133</name1>
+    <unknown1>1</unknown1>
+    <vspeed>0</vspeed>
+    <name2>AF133QS</name2>
+    <unknown2>0</unknown2>
+    <windSpeed>0</windSpeed>
+    <windHeading>0</windHeading>
+  </initialSituation>
+  <flightPlan/>
+  <altiVol>0</altiVol>
+  <latForced>0.0</latForced>
+  <longForced>0.0</longForced>
+</Aircraft>

@@ -1,0 +1,29 @@
+DEMOSTRATION
+''''''''''''''''''''''''''''''''''''
+
+
+1.SpringBoot Actuators
+'''''''''''''''''''''''''''''''''''''''''''
+
+
+
+2.YAML File
+''''''''''''''''''''''
+
+
+
+
+3.SpringBoot Hateous (link in the REST crud application)
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+@GetMapping("/department/{departmentId}")
+    public EntityModel<Department> fetchById(@PathVariable("departmentId") int departmentId)
+    {
+        Department department = service.fetchById(departmentId);
+        EntityModel<Department> model = EntityModel.of(department);
+
+        WebMvcLinkBuilder linkToDepts = linkTo(methodOn(this.getClass()).fetchAllDepartments());
+        model.add(linkToDepts.withRel("all-depts"));
+
+        return model;
+    }

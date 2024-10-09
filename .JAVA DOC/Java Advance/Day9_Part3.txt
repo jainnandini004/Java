@@ -1,0 +1,220 @@
+custom generator:
+``````````````````
+we can apply the custom generator also for this we have
+to define one java class that must be implements from 
+IdentifierGenerator and then we can override generate() with our own custom
+generator logic and then we can apply this strategy in our model class.
+
+
+CustomGenerator.java:
+```````````````````````
+package com.sopra.entity;
+
+import java.io.Serializable;
+import java.util.Random;
+
+import org.hibernate.HibernateException;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
+import org.hibernate.id.IdentifierGenerator;
+
+public class CustomGenerator implements IdentifierGenerator {
+
+	public Serializable generate(SharedSessionContractImplementor session, Object object) throws HibernateException {
+		
+		int id=0;
+		Random random = new Random();
+		
+		
+		id=random.nextInt(1000);
+		
+		
+		return "stu-" + id;
+		
+		
+	}
+
+}
+
+
+hibernate web application (hibernate + jsp integration):
+```````````````````````````````````````````````````````
+index.jsp:
+```````````
+<html>
+<body>
+
+<form action="process.jsp" method="post">
+
+Student's First Name: <input type="text" name="firstName"/><br/>
+Student's Last Name: <input type="text" name="lastName"/><br/>
+<input type="submit" value="register"/>
+
+
+</form>
+
+
+
+
+</body>
+</html>
+
+process.jsp:
+````````````
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"
+    import="com.sopra.dao.StudentDao"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+<jsp:useBean id="stu" class="com.sopra.entity.Student"></jsp:useBean>
+
+<jsp:setProperty property="*" name="stu"/>
+
+
+<%
+
+int x = StudentDao.register(stu);
+
+if(x>0)
+{
+	out.println("successfully registered");
+}
+
+%>
+
+
+</body>
+</html>
+
+hibernate.cfg.xml:
+```````````````````
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-configuration SYSTEM 
+"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+
+
+ <session-factory>
+	<!-- data base properties -->
+	<property name="connection.driver_class">oracle.jdbc.driver.OracleDriver</property>
+	<property name="connection.url">jdbc:oracle:thin:@localhost:1521:xe</property>
+	<property name="connection.username">sopra</property>
+	<property name="connection.password">sopra</property>
+
+<!-- hibernate properties -->
+	<property name="dialect">org.hibernate.dialect.Oracle9Dialect</property>
+	 <property name="show_sql">true</property>
+	<property name="format_sql">true</property>
+	<property name="hbm2ddl.auto">create</property>
+	
+	<!-- mapping file -->
+	<mapping class="com.sopra.entity.Student"/>
+	</session-factory>
+
+</hibernate-configuration>
+
+Student.java:
+`````````````
+package com.sopra.entity;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+import org.hibernate.annotations.GenericGenerator;
+
+@Entity
+public class Student {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private int stid;
+	
+	private String firstName;
+	private String lastName;
+	
+	
+	public int getStid() {
+		return stid;
+	}
+	public void setStid(int stid) {
+		this.stid = stid;
+	}
+	public String getFirstName() {
+		return firstName;
+	}
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	public String getLastName() {
+		return lastName;
+	}
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+	public Student()
+	{
+		
+	}
+	
+
+}
+
+StudentDao.java:
+````````````````
+package com.sopra.dao;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.boot.Metadata;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+
+import com.sopra.entity.Student;
+
+public class StudentDao {
+	
+	public static int register(Student st)
+	{
+		
+		
+		int i=0;
+		StandardServiceRegistry ssr = new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
+
+		Metadata meta = new MetadataSources(ssr).getMetadataBuilder().build();
+
+		SessionFactory factory = meta.getSessionFactoryBuilder().build();
+
+		Session session = factory.openSession();
+
+		Transaction transaction = session.beginTransaction();
+		
+		
+	    i = (Integer)session.save(st);
+	    transaction.commit();
+	    
+		factory.close();
+		session.close();
+		
+		return i;
+		
+	}
+
+}
+
+
+
+
+
+
+note:
+``````
+make sure add ojdbc jar to the buildpath and lib folder of project
